@@ -1,0 +1,17 @@
+{% extends 'basic.html' %}
+{% load custom_tags %}
+
+{% block content %}
+<div class="row text-center p-4">
+    <div class="d-flex justify-content-center mb-3">
+        {%for ctg in object_list %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ctg.name}}</h5>
+                <p class="card-text fst-italic text-secondary">{{cth.description}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

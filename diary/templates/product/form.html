@@ -1,0 +1,40 @@
+{% extends 'basic.html' %}
+{% load custom_tags %}
+
+{% block content %}
+    {{url}}
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data" class="row">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title fw-bolder">{{title|capfirst}}</h3></div>
+                        <div class="card-body">
+                            {% csrf_token %}
+                                {% for field in form %}
+                                    <p>
+                                        {{field.label|custom_label:required_fields|safe}}
+                                        {{field}}
+                                    </p>
+                                {% endfor %}
+                            <button type="submit" class="btn btn-lg btn-block btn-outline-primary w-25">{{form_btn_name}}</button>
+                            <a href="{{back_url}}" class="btn btn-lg btn-block btn-outline-primary w-25">Назад</a>
+                        </div>
+                    </div>
+                </div>
+                {% if object %}
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header"><h3 class="card-title fw-bolder">Версии</h3></div>
+                        <div class="card-body">
+                            {{ formset.management_form }}
+                            {% for form in formset.forms %} {{ form.as_p }} {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
