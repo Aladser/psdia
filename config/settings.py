@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+
+from django.conf.global_settings import STATICFILES_DIRS
 from dotenv import load_dotenv
 
 APP_NAME = 'Личный дневник'
@@ -19,7 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'authen',
-    'diary'
+    'diary',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +87,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # --- СТАТИКА ---
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 LANGUAGE_CODE = 'ru-Ru'
