@@ -1,0 +1,22 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <div class="w-50 mx-auto">
+            <form method="post" enctype="multipart/form-data" class="form-floating">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                {% if section == 'register'%}
+                <button type="submit" class="btn btn-lg btn-block btn-outline-primary w-25 me-1">Регистрация</button>
+                {% else %}
+                <button type="submit" class="btn btn-lg btn-block btn-outline-primary w-25 me-1">Сохранить</button>
+                {% endif %}
+
+                <a href="{% url 'product:list' %}" class="btn btn-lg btn-block btn-outline-primary w-25">На главную</a>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
