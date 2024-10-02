@@ -28,6 +28,10 @@ html {
     color: var(--color-beige-gray);
 }
 
+.border-theme {
+    border:1px solid var(--color-jade);
+}
+
 .border-bottom-theme {
     border-bottom:1px solid var(--color-jade);
 }
