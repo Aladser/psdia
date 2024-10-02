@@ -1,0 +1,53 @@
+html {
+    --color-beige: #f8f8d9;
+    --color-jade: #00a86b;
+    --color-jade-30: rgba(0,168,107, 0.3);
+    --color-khaki: #78866b;
+    --color-beige-gray: #646462;
+}
+
+.bgcolor-beige {
+    background-color: var(--color-beige);
+}
+.color-beige {
+    color: var(--color-beige);
+}
+
+.bgcolor-jade {
+    background-color:var(--color-jade);
+}
+.color-jade {
+    color: var(--color-jade);
+}
+
+.color-khaki {
+    color: var(--color-khaki);
+}
+
+.color-beige-gray {
+    color: var(--color-beige-gray);
+}
+
+.border-bottom-theme {
+    border-bottom:1px solid var(--color-jade);
+}
+
+.shadow-theme{
+    box-shadow: 0px -1px 8px 9px var(--color-jade-30);
+}
+
+/* кнопка */
+.btn-theme {
+    display: inline-block;
+    width: 10em;
+    text-align: center;
+    background-color:var(--color-jade);
+    color: var(--color-beige);
+    text-decoration: none;
+    padding: 0.9em 1.8em;
+    border-radius: 0.6em;
+    font-size:1.1em;
+}
+.btn-theme:hover {
+    opacity: 0.7;
+}

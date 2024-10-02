@@ -87,8 +87,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # --- СТАТИКА ---
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 LANGUAGE_CODE = 'ru-Ru'
 TIME_ZONE = 'UTC'
