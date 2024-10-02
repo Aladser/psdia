@@ -6,9 +6,9 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, TemplateView
 
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
 from authen.models import User
@@ -21,11 +21,9 @@ class UserLoginView(AuthenMixin, LoginView):
     template_name = 'login.html'
     form_class = AuthForm
 
-    title = f"{os.getenv('APP_NAME')}: авторизация"
     extra_context = {
-        'section': title,
-        'header': title,
-        'title': title
+        'title': f"{os.getenv('APP_NAME')} - авторизация",
+        'header': "Авторизация пользователя",
     }
 
 
@@ -36,11 +34,9 @@ class RegisterView(AuthenMixin, CreateView):
     template_name = 'user_form.html'
     success_url = reverse_lazy('authen:login')
 
-    title = f"{os.getenv('APP_NAME')}: регистрация"
     extra_context = {
-        'section': 'register',
-        'header': title,
-        'title': title
+        'title': f"{os.getenv('APP_NAME')} -  регистрация",
+        'header': "Регистрация пользователя",
     }
 
     def form_valid(self, form):
@@ -60,13 +56,7 @@ class RegisterView(AuthenMixin, CreateView):
                 fail_silently=True
             )
 
-            header = 'Регистрация успешно завершена!'
-            description = 'Ссылка для подтверждения регистрации отправлена на вашу почту.'
-            return render(
-                self.request,
-                'information.html',
-                {'header': header, 'description': description}
-            )
+            return redirect(reverse_lazy("authen:register-complete"))
 
         return super().form_valid(form)
 
@@ -80,9 +70,8 @@ class ProfileView(AuthenMixin, UpdateView):
 
     title = "профиль пользователя"
     extra_context = {
-        'section': 'profile',
-        'header': title.title(),
-        'title': title
+        'title':  f"{os.getenv("APP_NAME")} - профиль  пользователя",
+        'header': "Профиль пользователя",
     }
 
     def get_object(self, queryset=None):
@@ -96,11 +85,9 @@ class ManualPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
 
-    title = f"{os.getenv('APP_NAME')}: сброс пароля"
     extra_context = {
-        'section': title,
-        'header': title,
-        'title': title
+        'title': f"{os.getenv('APP_NAME')} - сброс пароля",
+        'header': "Сброс пароля"
     }
 
 
@@ -113,7 +100,7 @@ class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
 
 # ПОДТВЕРЖДЕНИЕ ПОЧТЫ
 def verificate_email_view(request: Request, token: str) -> HttpResponse:
-    """подтверждение почты"""
+    """Подтверждение почты"""
 
     if User.objects.filter(token=token).exists():
         user = User.objects.get(token=token)
@@ -134,3 +121,11 @@ def verificate_email_view(request: Request, token: str) -> HttpResponse:
             'header': title,
         }
     )
+
+# ЗАВЕРШЕНИЕ РЕГИСТРАЦИИ
+class RegisterCompleteView(TemplateView):
+    template_name = "register_complete.html"
+    extra_context = {
+        'header': "Регистрация пользователя",
+        'title': os.getenv("APP_NAME") + " - регистрация"
+    }
