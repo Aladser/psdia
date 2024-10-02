@@ -35,7 +35,7 @@ class RegisterView(AuthenMixin, CreateView):
     template_name = 'user_form.html'
     success_url = reverse_lazy('authen:login')
 
-    title = "Регистрация пользователя"
+    title = "Регистрация"
     extra_context = {
         'section': 'register',
         'header': title,
@@ -98,7 +98,7 @@ class ManualPasswordResetView(PasswordResetView):
     title = "Сброс пароля"
     extra_context = {
         'section': title,
-        'header': title.title(),
+        'header': title,
         'title': title
     }
 
