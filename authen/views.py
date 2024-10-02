@@ -1,18 +1,15 @@
-from dataclasses import dataclass
-from logging import raiseExceptions
 from secrets import token_hex
 from urllib.request import Request
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
-from authen.management.commands.createusers import user_dict
 from authen.models import User
 from config.settings import APP_NAME, EMAIL_HOST_USER
 from libs.authen_mixin import AuthenMixin
@@ -26,7 +23,7 @@ class UserLoginView(AuthenMixin, LoginView):
     title = "Авторизация"
     extra_context = {
         'section': title,
-        'header': title.title(),
+        'header': title.title,
         'title': title
     }
 
@@ -41,7 +38,7 @@ class RegisterView(AuthenMixin, CreateView):
     title = "Регистрация пользователя"
     extra_context = {
         'section': 'register',
-        'header': title.title(),
+        'header': title,
         'title': title
     }
 
@@ -74,11 +71,11 @@ class RegisterView(AuthenMixin, CreateView):
 
 
 # ПРОФИЛЬ
-class ProfileView(UpdateView):
+class ProfileView(AuthenMixin, UpdateView):
     model = User
     form_class = ProfileForm
     template_name = 'user_form.html'
-    success_url = reverse_lazy('product:list')
+    success_url = '/'
 
     title = "профиль пользователя"
     extra_context = {
