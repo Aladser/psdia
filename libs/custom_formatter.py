@@ -14,6 +14,6 @@ class CustomFormatter:
 
         for field in form.fields.values():
             if not isinstance(field, BooleanField):
-                field.widget.attrs['class'] = 'form-control mb-2'
+                field.widget.attrs['class'] = 'form-control mb-2 bgcolor-beige border-theme'
             else:
                 field.widget.attrs['class'] = 'mb-2'

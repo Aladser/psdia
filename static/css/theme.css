@@ -1,5 +1,6 @@
 html {
     --color-beige: #f8f8d9;
+    --color-dark-beige: #f3f3ae;
     --color-jade: #00a86b;
     --color-jade-30: rgba(0,168,107, 0.3);
     --color-khaki: #78866b;
@@ -8,6 +9,9 @@ html {
 
 .bgcolor-beige {
     background-color: var(--color-beige);
+}
+.bgcolor-dark-beige {
+    background-color: var(--color-dark-beige);
 }
 .color-beige {
     color: var(--color-beige);
@@ -26,6 +30,10 @@ html {
 
 .color-beige-gray {
     color: var(--color-beige-gray);
+}
+
+.border-theme {
+    border:1px solid var(--color-jade);
 }
 
 .border-bottom-theme {
@@ -50,4 +58,12 @@ html {
 }
 .btn-theme:hover {
     opacity: 0.7;
+}
+
+.header-link{
+    text-decoration:none;
+    color:var(--color-khaki);
+}
+.header-link:hover{
+    opacity: 0.75;
 }

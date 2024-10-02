@@ -22,10 +22,9 @@
                 </p>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-block btn-outline-primary mb-1 w-100">Войти</button>
-                <a href="{% url 'authen:password-reset' %}" class="btn btn-outline-primary mb-1 w-100">Забыл пароль</a>
-                <a href="{% url 'authen:register' %}" class="btn btn-outline-primary mb-1 w-100">Регистрация</a>
-                <a href="/" class="btn btn-outline-primary w-100">Главная страница</a>
+                <button type="submit" class="btn-theme mb-1 w-100 border-0 p-2">Войти</button>
+                <a href="{% url 'authen:password-reset' %}" class="btn-theme mb-1 border-0 w-100 p-2">Забыл пароль</a>
+                <a href="{% url 'authen:register' %}" class="btn-theme mb-1 border-0 w-100 p-2">Регистрация</a>
             </form>
         </div>
     </div>
