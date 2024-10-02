@@ -5,11 +5,13 @@
 
     <div class="pricing-header px-3 pb-md-4 mx-auto text-center">
         <div class="w-50 mx-auto">
-            {% if errors%}
+            {% if form.errors %}
                 <ul>
-                    {% for err in errors %}
-                    <li class="text-danger fw-bolder">{{err}}</li>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li class="text-danger fw-bolder">{{error}}</li>
                     {% endfor %}
+                {% endfor %}
                 </ul>
             {% endif %}
 

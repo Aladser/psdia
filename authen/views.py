@@ -1,13 +1,14 @@
 from dataclasses import dataclass
+from logging import raiseExceptions
 from secrets import token_hex
 from urllib.request import Request
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
@@ -103,22 +104,6 @@ class ManualPasswordResetView(PasswordResetView):
         'header': title.title(),
         'title': title
     }
-
-    def form_valid(self, form):
-        email = self.request.POST['email']
-        user = User.objects.filter(email=email)
-
-        if not user.exists():
-            title = 'Ошибка'
-            header = 'Пользователь с указанной почтой не найден'
-            return render(
-                self.request,
-                'information.html',
-                {'title':title, 'header': header}
-            )
-        else:
-            return super().form_valid(form)
-
 
 
 # ВВОД НОВОГО ПАРОЛЯ

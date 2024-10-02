@@ -4,12 +4,12 @@
 {% block content %}
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <div class="w-50 mx-auto">
-            {% if errors%}
-                <ul>
-                    {% for err in errors %}
-                    <li class="text-danger fw-bolder">{{err}}</li>
-                    {% endfor %}
-                </ul>
+            {% if form.errors %}
+                <div>
+                {% for key,value in form.errors.items %}
+                    <div class="text-danger fw-bolder">{{value}}</div>
+                {% endfor %}
+                </div>
             {% endif %}
 
             <form method="post" enctype="multipart/form-data" class="form-floating w-75 mx-auto">

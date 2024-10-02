@@ -1,8 +1,13 @@
+from urllib.parse import uses_relative
+
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.core.exceptions import ValidationError
+from django.db.models.fields import return_None
 
+from authen.management.commands.createusers import user_dict
 from authen.models import User
 from libs.custom_formatter import CustomFormatter
 
@@ -49,6 +54,15 @@ class CustomPasswordResetForm(PasswordResetForm):
             "autocomplete": "email"}
         )
     )
+
+    def clean_email(self):
+        """проверка поля почты """
+
+        email = self.cleaned_data['email']
+        user = User.objects.filter(email=email)
+        if not user.exists():
+            raise ValidationError('Пользователь с указанной почтой не существует')
+        return email
 
 
 class CustomSetPasswordForm(SetPasswordForm):
