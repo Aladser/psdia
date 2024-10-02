@@ -1,3 +1,4 @@
+import os
 from secrets import token_hex
 from urllib.request import Request
 
@@ -20,10 +21,10 @@ class UserLoginView(AuthenMixin, LoginView):
     template_name = 'login.html'
     form_class = AuthForm
 
-    title = "Авторизация"
+    title = f"{os.getenv('APP_NAME')}: авторизация"
     extra_context = {
         'section': title,
-        'header': title.title,
+        'header': title,
         'title': title
     }
 
@@ -35,7 +36,7 @@ class RegisterView(AuthenMixin, CreateView):
     template_name = 'user_form.html'
     success_url = reverse_lazy('authen:login')
 
-    title = "Регистрация"
+    title = f"{os.getenv('APP_NAME')}: регистрация"
     extra_context = {
         'section': 'register',
         'header': title,
@@ -95,7 +96,7 @@ class ManualPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
 
-    title = "Сброс пароля"
+    title = f"{os.getenv('APP_NAME')}: сброс пароля"
     extra_context = {
         'section': title,
         'header': title,
