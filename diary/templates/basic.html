@@ -14,10 +14,11 @@
 </head>
 
 <body class="bgcolor-beige">
-<div class="d-flex justify-content-between p-3 px-md-4 mb-3 bgcolor-beige shadow-theme">
+<div class="d-flex justify-content-between p-3 px-md-4 mb-3 shadow-theme bgcolor-dark-beige">
     <div class="d-flex justify-content-center align-items-center fs-3 fw-bolder color-khaki">
-        <img src="{% static 'favicon.png' %}" class="me-2">
-        {{header}}
+        <a href="/" class="header-link" title="На главную">
+            <img src="{% static 'favicon.png' %}" class="me-2">{{header}}
+        </a>
     </div>
     <div class="d-flex align-items-center">
         {% if user.is_authenticated %}

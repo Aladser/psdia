@@ -14,16 +14,20 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     </head>
     <body class="bgcolor-beige">
-    <div class="d-flex justify-content-between p-3 px-md-4 mb-3 bgcolor-beige shadow-theme">
+    <div class="d-flex justify-content-between p-3 px-md-4 mb-3 shadow-theme bgcolor-dark-beige">
         <div class="d-flex justify-content-center align-items-center fs-3 fw-bolder color-khaki">
-            <img src="{% static 'favicon.png' %}" class="me-2">
-            {{header}}
+            <a href="/" class="header-link" title="На главную">
+                <img src="{% static 'favicon.png' %}" class="me-2">{{header}}
+            </a>
         </div>
     </div>
 
 
     <div class="container bgcolor-beige">
-        <main>{% block content %}{% endblock %}</main>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
         <footer class="pt-4 my-md-5 pt-md-5">
         </footer>
     </div>
