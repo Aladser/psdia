@@ -31,6 +31,7 @@ class UserLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context["required_fields"] = CustomFormatter.get_form_required_field_labels(context["form"])
 
+        # массив ошибок
         context["errors"] = []
         errors_list = context["form"].errors.as_data().get("__all__")
         if errors_list:
@@ -124,6 +125,13 @@ class CustomPasswordResetView(PasswordResetView):
     email_template_name = 'password_reset_email.html'
     form_class = CustomPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
+
+    title = "сброс пароля"
+    extra_context = {
+        'section': title,
+        'header': title.title(),
+        'title': title
+    }
 
 
 # ВВОД НОВОГО ПАРОЛЯ

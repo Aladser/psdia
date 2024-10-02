@@ -41,12 +41,11 @@ class ProfileForm(UserChangeForm):
 
 class CustomPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(
-        label="Email",
         max_length=254,
         widget=forms.EmailInput(
         attrs={
             'class': 'form-control',
-            'placeholder': 'Введите Email',
+            'placeholder': 'Введите электронную почту',
             "autocomplete": "email"}
         )
     )
