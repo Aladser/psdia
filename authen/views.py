@@ -59,6 +59,14 @@ class RegisterView(AuthenMixin, CreateView):
                 fail_silently=True
             )
 
+            header = 'Регистрация успешно завершена!'
+            description = 'Ссылка для подтверждения регистрации отправлена на вашу почту.'
+            return render(
+                self.request,
+                'information.html',
+                {'header': header, 'description': description}
+            )
+
         return super().form_valid(form)
 
 
@@ -90,9 +98,9 @@ def verificate_email(request: Request, token: str) -> HttpResponse:
         user.token = None
         user.save()
 
-        title = 'почта успешно подтверждена'
+        title = 'Почта успешно подтверждена'
     else:
-        title = 'ссылка недействительная'
+        title = 'Ссылка недействительная'
 
     return render(
         request,
