@@ -18,9 +18,9 @@ user_dict = [
     }
 ]
 
+password = '_strongpassword_'
+
 
 class Command(BaseCommand):
-    password = '_strongpassword_'
-
     def handle(self, *args, **kwargs):
-        Seeding.seed_users(User, user_dict, self.password)
+        Seeding.seed_users(User, user_dict, password)

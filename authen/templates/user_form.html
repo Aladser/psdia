@@ -1,20 +1,33 @@
 {% extends 'basic_auth.html' %}
+{% load custom_tags %}
 
 {% block content %}
 
-    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <div class="pricing-header px-3 pb-md-4 mx-auto text-center">
         <div class="w-50 mx-auto">
+            {% if errors%}
+                <ul>
+                    {% for err in errors %}
+                    <li class="text-danger fw-bolder">{{err}}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
             <form method="post" enctype="multipart/form-data" class="form-floating">
-                {% csrf_token %}
-                {{ form.as_p }}
+                <div class="w-75 mx-auto">
+                    {% csrf_token %}
 
-                {% if section == 'register'%}
-                <button type="submit" class="btn btn-lg btn-block btn-outline-primary w-25 me-1">Регистрация</button>
-                {% else %}
-                <button type="submit" class="btn btn-lg btn-block btn-outline-primary w-25 me-1">Сохранить</button>
-                {% endif %}
+                    {% for field in form%}
+                    <p>
+                        {{field.label|custom_label:required_fields|safe}}
+                        {{field}}
+                    </p>
+                    {% endfor %}
 
-                <a href="/" class="btn btn-lg btn-block btn-outline-primary w-25">На главную</a>
+                    <button type="submit" class="btn btn-block btn-outline-primary w-100 mb-1">Отправить</button>
+                    <a href="{% url 'authen:login' %}" class="btn btn-outline-primary mb-1 w-100">Авторизация</a>
+                    <a href="/" class="btn btn-block btn-outline-primary w-100">Главная страница</a>
+                </div>
             </form>
         </div>
     </div>

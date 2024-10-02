@@ -12,44 +12,30 @@ from django.views.generic import CreateView, UpdateView
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
 from authen.models import User
 from config.settings import APP_NAME, EMAIL_HOST_USER
-from libs.custom_formatter import CustomFormatter
+from libs.authen_mixin import AuthenMixin
 
 
 # АВТОРИЗАЦИЯ
-class UserLoginView(LoginView):
+class UserLoginView(AuthenMixin, LoginView):
     template_name = 'login.html'
     form_class = AuthForm
 
-    title = "авторизация"
+    title = "Авторизация"
     extra_context = {
         'section': title,
         'header': title.title(),
         'title': title
     }
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["required_fields"] = CustomFormatter.get_form_required_field_labels(context["form"])
-
-        # массив ошибок
-        context["errors"] = []
-        errors_list = context["form"].errors.as_data().get("__all__")
-        if errors_list:
-            for val_error_list in errors_list:
-                for err in val_error_list:
-                    context["errors"].append(err)
-
-        return context
-
 
 # РЕГИСТРАЦИЯ
-class RegisterView(CreateView):
+class RegisterView(AuthenMixin, CreateView):
     model = User
     form_class = RegisterForm
     template_name = 'user_form.html'
     success_url = reverse_lazy('authen:login')
 
-    title = "регистрация пользователя"
+    title = "Регистрация пользователя"
     extra_context = {
         'section': 'register',
         'header': title.title(),
@@ -126,7 +112,7 @@ class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
 
-    title = "сброс пароля"
+    title = "Сброс пароля"
     extra_context = {
         'section': title,
         'header': title.title(),
