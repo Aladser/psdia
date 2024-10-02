@@ -1,0 +1,44 @@
+html {
+    --color-beige: #f8f8d9;
+    --color-jade: #00a86b;
+    --color-khaki: #78866b;
+    --color-beige-gray: #646462;
+}
+
+.bgcolor-beige {
+    background-color: var(--color-beige);
+}
+.color-beige {
+    color: var(--color-beige);
+}
+
+.bgcolor-jade {
+    background-color:var(--color-jade);
+}
+.color-jade {
+    color: var(--color-jade);
+}
+
+.color-khaki {
+    color: var(--color-khaki);
+}
+
+.color-beige-gray {
+    color: var(--color-beige-gray);
+}
+
+/* кнопка */
+.btn-theme {
+    display: inline-block;
+    width: 10em;
+    text-align: center;
+    background-color:var(--color-jade);
+    color: var(--color-beige);
+    text-decoration: none;
+    padding: 0.9em 1.8em;
+    border-radius: 0.6em;
+    font-size:1.1em;
+}
+.btn-theme:hover {
+    opacity: 0.7;
+}
