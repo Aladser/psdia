@@ -1,14 +1,31 @@
-{% extends 'basic.html' %}
+{% extends 'basic_auth.html' %}
+{% load custom_tags %}
 
 {% block content %}
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <div class="w-50 mx-auto">
-            <form method="post" enctype="multipart/form-data" class="form-floating">
+            {% if form.errors %}
+                <div>
+                {% for key,value in form.errors.items %}
+                    <div class="text-danger fw-bolder">{{value}}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" class="form-floating w-75 mx-auto">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-lg btn-block btn-outline-primary me-1 btn-theme-width-10">Войти</button>
-                <a href="{% url 'authen:password-reset' %}" class="btn btn-lg btn-block btn-outline-primary me-1 btn-theme-width-10">Забыл пароль</a>
-                <a href="/" class="btn btn-lg btn-block btn-outline-primary btn-theme-width-10">На главную</a>
+
+                {% for field in form%}
+                <p>
+                    {{field.label|custom_label:required_fields|safe}}
+                    {{field}}
+                </p>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-block btn-outline-primary mb-1 w-100">Войти</button>
+                <a href="{% url 'authen:password-reset' %}" class="btn btn-outline-primary mb-1 w-100">Забыл пароль</a>
+                <a href="{% url 'authen:register' %}" class="btn btn-outline-primary mb-1 w-100">Регистрация</a>
+                <a href="/" class="btn btn-outline-primary w-100">Главная страница</a>
             </form>
         </div>
     </div>

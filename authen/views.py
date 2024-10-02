@@ -1,39 +1,44 @@
+from dataclasses import dataclass
+from logging import raiseExceptions
 from secrets import token_hex
 from urllib.request import Request
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
+from authen.management.commands.createusers import user_dict
 from authen.models import User
 from config.settings import APP_NAME, EMAIL_HOST_USER
+from libs.authen_mixin import AuthenMixin
 
 
 # АВТОРИЗАЦИЯ
-class UserLoginView(LoginView):
+class UserLoginView(AuthenMixin, LoginView):
     template_name = 'login.html'
     form_class = AuthForm
 
-    title = "авторизация"
+    title = "Авторизация"
     extra_context = {
         'section': title,
         'header': title.title(),
         'title': title
     }
 
+
 # РЕГИСТРАЦИЯ
-class RegisterView(CreateView):
+class RegisterView(AuthenMixin, CreateView):
     model = User
     form_class = RegisterForm
     template_name = 'user_form.html'
     success_url = reverse_lazy('authen:login')
 
-    title = "регистрация пользователя"
+    title = "Регистрация пользователя"
     extra_context = {
         'section': 'register',
         'header': title.title(),
@@ -57,6 +62,14 @@ class RegisterView(CreateView):
                 fail_silently=True
             )
 
+            header = 'Регистрация успешно завершена!'
+            description = 'Ссылка для подтверждения регистрации отправлена на вашу почту.'
+            return render(
+                self.request,
+                'information.html',
+                {'header': header, 'description': description}
+            )
+
         return super().form_valid(form)
 
 
@@ -78,9 +91,31 @@ class ProfileView(UpdateView):
         return self.request.user
 
 
-# ПОДТВЕРДИТЬ ПОЧТУ
-def verificate_email(request: Request, token: str) -> HttpResponse:
-    """Подтвердить почту"""
+# СБРОС ПАРОЛЯ - ОТПРАВКА ССЫЛКИ НА ПОЧТУ
+class ManualPasswordResetView(PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    form_class = CustomPasswordResetForm
+    success_url = reverse_lazy('authen:password_reset_done')
+
+    title = "Сброс пароля"
+    extra_context = {
+        'section': title,
+        'header': title.title(),
+        'title': title
+    }
+
+
+# ВВОД НОВОГО ПАРОЛЯ
+class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'password_reset_confirm.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('authen:password_reset_complete')
+
+
+# ПОДТВЕРЖДЕНИЕ ПОЧТЫ
+def verificate_email_view(request: Request, token: str) -> HttpResponse:
+    """подтверждение почты"""
 
     if User.objects.filter(token=token).exists():
         user = User.objects.get(token=token)
@@ -88,9 +123,9 @@ def verificate_email(request: Request, token: str) -> HttpResponse:
         user.token = None
         user.save()
 
-        title = 'почта успешно подтверждена'
+        title = 'Почта успешно подтверждена'
     else:
-        title = 'ссылка недействительная'
+        title = 'Ссылка недействительная'
 
     return render(
         request,
@@ -101,19 +136,3 @@ def verificate_email(request: Request, token: str) -> HttpResponse:
             'header': title,
         }
     )
-
-
-# СБРОС ПАРОЛЯ - ОТПРАВКА ССЫЛКИ НА ПОЧТУ
-class CustomPasswordResetView(PasswordResetView):
-    template_name = 'password_reset.html'
-    email_template_name = 'password_reset_email.html'
-    form_class = CustomPasswordResetForm
-    success_url = reverse_lazy('authen:password_reset_done')
-
-
-# ВВОД НОВОГО ПАРОЛЯ
-class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'password_reset_confirm.html'
-    form_class = CustomSetPasswordForm
-    success_url = reverse_lazy('authen:password_reset_complete')
-

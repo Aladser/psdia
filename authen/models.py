@@ -3,18 +3,6 @@ from django.db import models
 from config.settings import NULLABLE
 
 
-class Country(models.Model):
-    name = models.CharField(max_length=30, verbose_name='Название')
-    description = models.CharField(max_length=30, verbose_name='Описание')
-
-    class Meta:
-        verbose_name = 'страна'
-        verbose_name_plural = 'страны'
-
-    def __str__(self):
-        return self.description
-
-
 class User(AbstractUser):
     username = None
     email = models.EmailField(verbose_name='почта', unique=True)
@@ -22,13 +10,6 @@ class User(AbstractUser):
     avatar = models.ImageField(verbose_name='аватар', upload_to='img/user', **NULLABLE)
     token = models.CharField(verbose_name="Токен", **NULLABLE, max_length=100)
 
-    country = models.ForeignKey(
-        to=Country,
-        on_delete=models.CASCADE,
-        related_name='users',
-        verbose_name='страна',
-        ** NULLABLE
-    )
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
