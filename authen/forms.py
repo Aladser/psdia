@@ -36,7 +36,7 @@ class ProfileForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'avatar', 'phone', 'country')
+        fields = ('email', 'first_name', 'last_name', 'avatar', 'phone')
 
 
 class CustomPasswordResetForm(PasswordResetForm):

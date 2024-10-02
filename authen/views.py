@@ -12,6 +12,7 @@ from django.views.generic import CreateView, UpdateView
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
 from authen.models import User
 from config.settings import APP_NAME, EMAIL_HOST_USER
+from libs.custom_formatter import CustomFormatter
 
 
 # АВТОРИЗАЦИЯ
@@ -25,6 +26,20 @@ class UserLoginView(LoginView):
         'header': title.title(),
         'title': title
     }
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["required_fields"] = CustomFormatter.get_form_required_field_labels(context["form"])
+
+        context["errors"] = []
+        errors_list = context["form"].errors.as_data().get("__all__")
+        if errors_list:
+            for val_error_list in errors_list:
+                for err in val_error_list:
+                    context["errors"].append(err)
+
+        return context
+
 
 # РЕГИСТРАЦИЯ
 class RegisterView(CreateView):
@@ -116,4 +131,3 @@ class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'password_reset_confirm.html'
     form_class = CustomSetPasswordForm
     success_url = reverse_lazy('authen:password_reset_complete')
-
