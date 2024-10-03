@@ -1,8 +1,9 @@
 from django.db import models
 from authen.models import User
+from libs.truncate_table_mixin import TruncateTableMixin
 
 
-class Record(models.Model):
+class Record(TruncateTableMixin, models.Model):
     owner = models.ForeignKey(
         to=User,
         verbose_name="Автор",

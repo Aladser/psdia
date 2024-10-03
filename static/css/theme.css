@@ -40,6 +40,10 @@ html {
     border-bottom:1px solid var(--color-jade);
 }
 
+.border-bottom-2-theme {
+    border-bottom: 2px solid var(--color-jade);
+}
+
 .shadow-theme{
     box-shadow: 0px -1px 8px 9px var(--color-jade-30);
 }
