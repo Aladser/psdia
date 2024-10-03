@@ -27,7 +27,10 @@
                     {% endfor %}
 
                     <button type="submit" class="btn-theme mb-1 w-100 border-0 p-2">Отправить</button>
-                    {%if section == 'register'%}<a href="{% url 'authen:login' %}" class="btn-theme mb-1 w-100 border-0 p-2">Авторизация</a>{% endif %}
+                    {%if header == "Регистрация пользователя" %}
+                        <a href="{% url 'authen:login' %}" class="btn-theme mb-1 w-100 border-0 p-2">Авторизация</a>
+                    {%endif%}
+                    <a href="/" class="btn-theme w-100 p-2">Вернуться на главную</a>
                 </div>
             </form>
         </div>
