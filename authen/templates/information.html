@@ -3,7 +3,12 @@
 {% block content %}
 
     <div class="pricing-header px-3 py-2 pt-md-5 pb-md-4 mx-auto text-center">
-        <a href="/" class="btn-theme w-50">На главную</a>
+        <p class="pb-4 fs-4">{{description}}</p>
+
+        {%if header == "Подтверждение регистрации" and description == 'Почта успешно подтверждена' %}
+            <a href="{% url 'authen:login' %}" class="btn-theme mb-1 w-50 border-0 p-2">Авторизация</a>
+        {%endif%}
+        <a href="/" class="btn-theme w-50 p-2">На главную</a>
     </div>
 
 {% endblock %}

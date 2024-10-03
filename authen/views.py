@@ -1,17 +1,16 @@
 import os
 from secrets import token_hex
-from urllib.request import Request
 
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetCompleteView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
 
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
 from authen.models import User
+from authen.services import verificate_user
 from config.settings import APP_NAME, EMAIL_HOST_USER
 from libs.authen_mixin import AuthenMixin
 
@@ -91,34 +90,38 @@ class ManualPasswordResetView(PasswordResetView):
 
 
 # ВВОД НОВОГО ПАРОЛЯ
-class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
+class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
+    extra_context = {
+        'title':  f"{os.getenv("APP_NAME")} - ввод нового пароля",
+        'header': "Ввод нового пароля",
+    }
+
     template_name = 'password_reset_confirm.html'
     form_class = CustomSetPasswordForm
     success_url = reverse_lazy('authen:password_reset_complete')
 
+# ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
+class ManualPasswordResetCompleteView(PasswordResetCompleteView):
+    extra_context = {
+        'title': f"{os.getenv("APP_NAME")} - ввод нового пароля",
+        'header': "Ввод нового пароля",
+    }
+
 
 # ПОДТВЕРЖДЕНИЕ ПОЧТЫ
-def verificate_email_view(request: Request, token: str) -> HttpResponse:
-    """Подтверждение почты"""
+class VerificateEmailView(TemplateView):
+    template_name = "information.html"
+    extra_context = {
+        'title':  f"{os.getenv("APP_NAME")} - подтверждение регистрации",
+        'header': "Подтверждение регистрации",
+    }
 
-    if User.objects.filter(token=token).exists():
-        user = User.objects.get(token=token)
-        user.is_active = True
-        user.token = None
-        user.save()
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        if kwargs.get('token'):
+            context['description'] = verificate_user(kwargs['token'])
+        return context
 
-        title = 'Почта успешно подтверждена'
-    else:
-        title = 'Ссылка недействительная'
-
-    return render(
-        request,
-        'information.html',
-        {
-            'title': title,
-            'header': title,
-        }
-    )
 
 # ЗАВЕРШЕНИЕ РЕГИСТРАЦИИ
 class RegisterCompleteView(TemplateView):
