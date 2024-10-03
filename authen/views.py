@@ -68,7 +68,6 @@ class ProfileView(AuthenMixin, UpdateView):
     template_name = 'user_form.html'
     success_url = '/'
 
-    title = "профиль пользователя"
     extra_context = {
         'title':  f"{os.getenv("APP_NAME")} - профиль  пользователя",
         'header': "Профиль пользователя",
@@ -116,7 +115,6 @@ def verificate_email_view(request: Request, token: str) -> HttpResponse:
         request,
         'information.html',
         {
-            'section': 'confirmation',
             'title': title,
             'header': title,
         }
@@ -126,6 +124,6 @@ def verificate_email_view(request: Request, token: str) -> HttpResponse:
 class RegisterCompleteView(TemplateView):
     template_name = "register_complete.html"
     extra_context = {
+        'title':  f"{os.getenv("APP_NAME")} - регистрация пользователя",
         'header': "Регистрация пользователя",
-        'title': os.getenv("APP_NAME") + " - регистрация"
     }
