@@ -1,6 +1,7 @@
 from struct import pack_into
 
 from django.views.generic import ListView, DetailView
+from sqlparse.utils import consume
 
 from diary.models import Record
 from django.views.generic import ListView, DetailView
@@ -20,6 +21,7 @@ class RecordListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['css_list'] = ['record_list.css']
 
         # урезание размера содержания
         for obj in context["object_list"]:

@@ -1,0 +1,10 @@
+.record-card {
+    text-decoration: none;
+    border-radius: 0 0 1em 0;
+    background-color: white;
+    border: 1px solid #78866b;
+}
+.record-card:hover {
+    opacity: 0.75;
+    color:black;
+}

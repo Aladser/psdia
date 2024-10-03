@@ -3,9 +3,9 @@
 {% block content %}
     <div class="d-flex justify-content-center d-flex flex-wrap rounded shadow">
         {% for obj in object_list%}
-        <a href="{% url 'diary:detail' obj.pk %}" class="card d-flex justify-content-between flex-column bg-light p-2 m-2 w-30 text-decoration-none">
+        <a href="{% url 'diary:detail' obj.pk %}" class="record-card p-2 m-2 w-30">
             <div class='card-body'>
-                <div class="card-title fw-bolder color-beige-gray">{{obj.created_at}}</div>
+                <div class="fw-bolder color-beige-gray">{{obj.created_at}}</div>
                 {% if user.is_superuser %}<div class="color-jade pb-2">{{obj.owner}}</div>{% endif %}
                 <p class="card-text color-beige-gray">{{obj.content}}</p>
             </div>
