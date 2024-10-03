@@ -1,15 +1,20 @@
 from struct import pack_into
 
-from django.views.generic import ListView, DetailView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.utils.translation.template import context_re
+from django.views.generic import ListView, DetailView, CreateView
 from sqlparse.utils import consume
 
+from authen.urls import urlpatterns
+from diary.forms import RecordForm
 from diary.models import Record
 from django.views.generic import ListView, DetailView
 
 from diary.models import Record
 
 
-# СПИСОК
+# LIST
 class RecordListView(ListView):
     model = Record
     template_name = "record_list.html"
@@ -38,7 +43,32 @@ class RecordListView(ListView):
 
         return context
 
-# ДЕТАЛИ
+# CREATE
+class RecordCreateView(CreateView):
+    title = "добавить запись"
+    extra_context = {
+        'title': title,
+        'header': title.title()
+    }
+
+    model = Record
+    form_class = RecordForm
+    template_name = "record_form.html"
+
+    def form_valid(self, form):
+        if form.is_valid():
+            self.object = form.save()
+            self.object.owner = self.request.user
+            self.object.save()
+            url = reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
+        return HttpResponseRedirect(url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        print(context['form'])
+        return context
+
+# DETAIL
 class RecordDetailView(DetailView):
     model = Record
     template_name = "record_detail.html"
