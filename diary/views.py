@@ -1,5 +1,3 @@
-from pydoc import replace
-
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -9,6 +7,9 @@ from diary.forms import RecordForm
 from diary.models import Record
 from libs.login_required_mixin import ManualLoginRequiredMixin
 
+month_name_list = [
+    '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября','декабря'
+]
 
 # LIST
 class RecordListView(ListView):
@@ -20,7 +21,7 @@ class RecordListView(ListView):
 
     model = Record
     template_name = "record_list.html"
-    paginate_by = 15
+    paginate_by = 18
 
     def get_queryset(self):
         authuser = self.request.user
@@ -74,7 +75,8 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['object'].content = context['object'].content.replace('\n', '<br>').replace(" ", "&nbsp;")
 
-        created_at = context['object'].created_at.strftime("%d/%m/%Y %H:%M")
+        created_at_obj = context['object'].created_at
+        created_at = f"{created_at_obj.day} {month_name_list[created_at_obj.month]} {created_at_obj.year}г. {created_at_obj.hour}:{created_at_obj.minute}"
         context['title'] = created_at
         context['header'] = "Запись от " + created_at
         return context
