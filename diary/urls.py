@@ -1,10 +1,10 @@
 from django.urls import path
 
 from diary.apps import PsdiaConfig
-from diary.views import index
+from diary.views import RecordListView
 
 app_name = PsdiaConfig.name
 
 urlpatterns = [
-    path('', index, name="index")
+    path('', RecordListView.as_view(), name="index")
 ]
