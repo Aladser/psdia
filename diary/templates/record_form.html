@@ -10,8 +10,12 @@
                 <p>{{field}}</p>
                 {% endfor %}
 
-                 <button type="submit" class="btn-theme border-0 rounded">Создать</button>
-                <a href="/" class="btn-theme btn-my-link rounded">Отмена</a>
+                 <button type="submit" class="btn-theme border-0 rounded">Отправить</button>
+                {% if header == 'Добавить запись' %}
+                    <a href="{% url 'diary:list' %}" class="btn-theme btn-my-link rounded">Отмена</a>
+                {% else %}
+                    <a href="{% url 'diary:detail' object.pk %}" class="btn-theme btn-my-link rounded">Отмена</a>
+                {% endif %}
             </form>
         </div>
     </div>
