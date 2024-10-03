@@ -19,6 +19,14 @@ class RecordListView(ListView):
         'header': title.title(),
     }
 
+    def get_queryset(self):
+        authuser = self.request.user
+        if str(authuser) == 'AnonymousUser':
+            return Record.objects.none()
+
+        queryset = super().get_queryset()
+        return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['css_list'] = ['record_list.css']
