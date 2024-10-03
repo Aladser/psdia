@@ -1,3 +1,5 @@
+from pydoc import replace
+
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -31,6 +33,7 @@ class RecordListView(ListView):
 
         # урезание размера содержания
         for obj in context["object_list"]:
+            obj.content = obj.content.replace("\n", "<br>")
             if len(obj.content) > 100:
                 obj.content = obj.content[:100] + '..'
 
@@ -66,6 +69,7 @@ class RecordDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['object'].content = context['object'].content.replace('\n', '<br>').replace(" ", "&nbsp;")
 
         created_at = context['object'].created_at.strftime("%d/%m/%Y %H:%M")
         context['title'] = created_at
