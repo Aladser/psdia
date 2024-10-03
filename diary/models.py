@@ -10,7 +10,6 @@ class Record(TruncateTableMixin, models.Model):
         verbose_name="Автор",
         on_delete=models.CASCADE,
         related_name='records',
-        **NULLABLE
     )
     content = models.TextField(verbose_name="Содержание")
     created_at = models.DateTimeField(verbose_name="Создан", auto_now_add=True)

@@ -1,7 +1,9 @@
 {% extends 'basic.html' %}
 
 {% block content %}
+    {% if user.is_authenticated %}
     <a href="{% url 'diary:create' %}" class="btn-theme p-2 mb-4 w-25">Новая запись</a>
+    {% endif %}
     <div class="d-flex justify-content-center d-flex flex-wrap rounded shadow">
         {% for obj in object_list%}
         <a href="{% url 'diary:detail' obj.pk %}" class="record-card p-2 m-2 w-30">

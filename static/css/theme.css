@@ -44,6 +44,10 @@ html {
     border-bottom: 2px solid var(--color-jade);
 }
 
+.border-beige-gray {
+    border:1px solid var(--color-beige-gray);
+}
+
 .shadow-theme{
     box-shadow: 0px -1px 8px 9px var(--color-jade-30);
 }

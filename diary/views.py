@@ -1,16 +1,9 @@
-from struct import pack_into
-
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.translation.template import context_re
-from django.views.generic import ListView, DetailView, CreateView
-from sqlparse.utils import consume
-
-from authen.urls import urlpatterns
-from diary.forms import RecordForm
-from diary.models import Record
+from django.views.generic import CreateView
 from django.views.generic import ListView, DetailView
 
+from diary.forms import RecordForm
 from diary.models import Record
 
 
@@ -57,24 +50,19 @@ class RecordCreateView(CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            self.object = form.save()
-            self.object.owner = self.request.user
-            self.object.save()
-            url = reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
-        return HttpResponseRedirect(url)
+            content = form.__dict__['data']['content']
+            owner = self.request.user
+            self.object = Record.objects.create(owner=owner, content=content)
+            return redirect(self.get_success_url())
+        return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        print(context['form'])
-        return context
+    def get_success_url(self):
+        return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
 # DETAIL
 class RecordDetailView(DetailView):
     model = Record
     template_name = "record_detail.html"
-    extra_context = {
-        'title': "детали сообщения",
-    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
