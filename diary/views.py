@@ -1,22 +1,16 @@
-import os
-
-from django.shortcuts import render
 from django.views.generic import ListView
 
 from diary.models import Record
 
 
-def index(request):
-    return render(request, "index.html", {'header': 'Главная страница'})
-
-
-# СПИСОК РАССЫЛОК
+# СПИСОК ЗАПИСЕЙ
 class RecordListView(ListView):
     model = Record
     template_name = "list.html"
+    title = 'записи'
     extra_context = {
-        'title': 'записи',
-        'header': "Записи",
+        'title': title,
+        'header': title.title(),
     }
 
     def get_context_data(self, **kwargs):
@@ -28,3 +22,4 @@ class RecordListView(ListView):
                 obj.content = obj.content[:100] + '..'
 
         return context
+
