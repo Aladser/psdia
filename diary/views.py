@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
 from diary.models import Record
+from libs.login_required_mixin import ManualLoginRequiredMixin
 
 
 # LIST
@@ -42,7 +43,7 @@ class RecordListView(ListView):
         return context
 
 # CREATE
-class RecordCreateView(CreateView):
+class RecordCreateView(ManualLoginRequiredMixin, CreateView):
     title = "добавить запись"
     extra_context = {
         'title': title,
@@ -65,7 +66,7 @@ class RecordCreateView(CreateView):
         return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
 # DETAIL
-class RecordDetailView(DetailView):
+class RecordDetailView(ManualLoginRequiredMixin, DetailView):
     model = Record
     template_name = "record_detail.html"
 
