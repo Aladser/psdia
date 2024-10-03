@@ -12,8 +12,8 @@
 
         <div class="container bgcolor-beige">
             <main>
-                {% block content %}
-                {% endblock %}
+                {% include 'components/header.html' %}
+                {% block content %} {% endblock %}
             </main>
             <footer></footer>
         </div>

@@ -21,7 +21,7 @@ class UserLoginView(AuthenMixin, LoginView):
     form_class = AuthForm
 
     extra_context = {
-        'title': f"{os.getenv('APP_NAME')} - авторизация",
+        'title': "авторизация",
         'header': "Авторизация пользователя",
     }
 
@@ -34,7 +34,7 @@ class RegisterView(AuthenMixin, CreateView):
     success_url = reverse_lazy('authen:login')
 
     extra_context = {
-        'title': f"{os.getenv('APP_NAME')} -  регистрация",
+        'title': "регистрация",
         'header': "Регистрация пользователя",
     }
 
@@ -84,8 +84,8 @@ class ManualPasswordResetView(PasswordResetView):
     success_url = reverse_lazy('authen:password_reset_done')
 
     extra_context = {
-        'title': f"{os.getenv('APP_NAME')} - сброс пароля",
-        'header': "Сброс пароля"
+        'title': "сброс пароля",
+        'header': "Сброс пароля пользователя"
     }
 
 

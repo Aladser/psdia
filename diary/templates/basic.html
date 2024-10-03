@@ -28,8 +28,8 @@
 
         <div class="container">
             <main>
-                {% block content %}
-                {% endblock %}
+                {% include 'components/header.html' %}
+                {% block content %} {% endblock %}
             </main>
 
         </div>
