@@ -3,6 +3,7 @@
 
 {% block content %}
     <div class="text-center color-khaki bg-light border p-2 rounded fs-4">
+        <a href="{% url 'diary:delete' object.pk %}" class="d-block btn-theme p-1 w-25">Удалить запись</a>
         {{object|safe}}
     </div>
 {% endblock %}

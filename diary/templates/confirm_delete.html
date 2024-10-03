@@ -1,0 +1,18 @@
+{% extends 'basic.html' %}
+
+{% block content %}
+    <div class="pricing-header px-3 mx-auto text-center">
+        <div class="w-75 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <p class="fs-4 p-2">Действительно хотите удалить запись?</p>
+                        <button type="submit" class="btn-theme w-50 border-0 mb-2">Подтвердить</button>
+                        <a href="{% url 'diary:detail' object.pk %}" class=" btn-theme w-50">Отмена</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

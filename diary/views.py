@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
@@ -80,3 +80,15 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailView):
         context['title'] = created_at
         context['header'] = "Запись от " + created_at
         return context
+
+# DELETE
+class RecordDeleteView(ManualLoginRequiredMixin, DeleteView):
+    title = 'удаление записи'
+    extra_context = {
+        'title': title,
+        'header': title.title(),
+    }
+
+    model = Record
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('diary:list')
