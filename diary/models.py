@@ -1,8 +1,10 @@
 from django.db import models
 from authen.models import User
+from config.settings import NULLABLE
+from libs.truncate_table_mixin import TruncateTableMixin
 
 
-class Record(models.Model):
+class Record(TruncateTableMixin, models.Model):
     owner = models.ForeignKey(
         to=User,
         verbose_name="Автор",
@@ -19,4 +21,4 @@ class Record(models.Model):
         ordering = ('owner', 'updated_at')
 
     def __str__(self):
-        return f"{self.owner} {self.updated_at}: {self.content}"
+        return self.content

@@ -94,7 +94,7 @@ STATICFILES_DIRS = [
 ]
 
 LANGUAGE_CODE = 'ru-Ru'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Yakutsk'
 USE_I18N = True
 USE_TZ = True
 

@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 from authen.models import User
 from libs.seeding import Seeding
 
-user_dict = [
+user_params_obj_list = [
     {
         'email': 'admin@test.ru',
         'first_name': 'Админ',
@@ -12,8 +12,18 @@ user_dict = [
         'is_staff': True
     },
     {
-        'email': 'user@test.ru',
-        'first_name': 'Пользователь',
+        'email': 'user1@test.ru',
+        'first_name': 'Пользователь 1',
+        'last_name': 'Обычный',
+    },
+    {
+        'email': 'user2@test.ru',
+        'first_name': 'Пользователь 2',
+        'last_name': 'Обычный',
+    },
+    {
+        'email': 'user3@test.ru',
+        'first_name': 'Пользователь 3',
         'last_name': 'Обычный',
     }
 ]
@@ -23,4 +33,4 @@ password = '_strongpassword_'
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
-        Seeding.seed_users(User, user_dict, password)
+        Seeding.seed_users(User, user_params_obj_list, password)

@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 
-class CustomLoginRequiredMixin(LoginRequiredMixin):
+class ManualLoginRequiredMixin(LoginRequiredMixin):
     """Кастомизированный миксин обязательной авторизации"""
 
     login_url = reverse_lazy('authen:login')

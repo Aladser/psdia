@@ -1,0 +1,46 @@
+{% extends 'basic.html' %}
+{% load custom_tags %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <a href="{% url 'diary:create' %}" class="btn-theme p-2 mb-4 w-25">Новая запись</a>
+    {% endif %}
+    <div class="d-flex justify-content-center d-flex flex-wrap rounded shadow">
+        {% for obj in object_list%}
+        <a href="{% url 'diary:detail' obj.pk %}" class="record-card p-2 m-2 w-30">
+            <div class='card-body'>
+                <div class="fw-bolder color-beige-gray">{{obj.created_at}}</div>
+                {% if user.is_superuser %}<div class="color-jade pb-2">{{obj.owner}}</div>{% endif %}
+                <p class="card-text color-beige-gray">{{obj.content|safe}}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <!--пагинация-->
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination w-75 pt-4">
+            <span class="step-links fs-5">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="text-decoration-none color-beige-gray">1</a>
+                    {% if page_obj.paginator.num_pages > 2 %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="text-decoration-none color-beige-gray" title="предыдущая страница"> .. </a>
+                    {% endif %}
+                {% endif %}
+
+                <span class="current fw-bolder">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    {% if page_obj.paginator.num_pages > 2 %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="text-decoration-none color-beige-gray" title="следующая страница"> .. </a>
+                    {% endif %}
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="text-decoration-none color-beige-gray">
+                        {{page_obj.paginator.num_pages}}
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endblock %}
