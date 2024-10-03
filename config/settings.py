@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-from django.conf.global_settings import STATICFILES_DIRS
 from dotenv import load_dotenv
 
 APP_NAME = 'Личный дневник'
@@ -86,6 +85,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LANGUAGE_CODE = 'ru-Ru'
+TIME_ZONE = 'Asia/Yakutsk'
+USE_I18N = True
+USE_TZ = True
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+NULLABLE = {'null': True, 'blank': True}
+
 # --- СТАТИКА ---
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
@@ -93,17 +99,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-LANGUAGE_CODE = 'ru-Ru'
-TIME_ZONE = 'Asia/Yakutsk'
-USE_I18N = True
-USE_TZ = True
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# --- МЕДИА ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-NULLABLE = {'null': True, 'blank': True}
 
 # ПОЧТА
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -121,3 +119,9 @@ AUTH_USER_MODEL = "authen.User"
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+# CELERY
+CELERY_BROKER_URL = os.getenv("CELERY_URL")
+CELERY_RESULT_BACKEND = os.getenv("CELERY_URL")
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
