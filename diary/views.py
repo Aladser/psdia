@@ -11,13 +11,15 @@ from diary.models import Record
 
 # LIST
 class RecordListView(ListView):
-    model = Record
-    template_name = "record_list.html"
     title = 'записи'
     extra_context = {
         'title': title,
         'header': title.title(),
     }
+
+    model = Record
+    template_name = "record_list.html"
+    paginate_by = 15
 
     def get_queryset(self):
         authuser = self.request.user

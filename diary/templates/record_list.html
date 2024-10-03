@@ -16,4 +16,31 @@
         </a>
         {% endfor %}
     </div>
+
+    <!--пагинация-->
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination w-75 pt-4">
+            <span class="step-links fs-5">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="text-decoration-none color-beige-gray">1</a>
+                    {% if page_obj.paginator.num_pages > 2 %}
+                        <a href="?page={{ page_obj.previous_page_number }}" class="text-decoration-none color-beige-gray" title="предыдущая страница"> .. </a>
+                    {% endif %}
+                {% endif %}
+
+                <span class="current fw-bolder">
+                    {{ page_obj.number }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    {% if page_obj.paginator.num_pages > 2 %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="text-decoration-none color-beige-gray" title="следующая страница"> .. </a>
+                    {% endif %}
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="text-decoration-none color-beige-gray">
+                        {{page_obj.paginator.num_pages}}
+                    </a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
 {% endblock %}
