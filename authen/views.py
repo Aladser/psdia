@@ -3,7 +3,6 @@ from secrets import token_hex
 
 from django.contrib.auth.views import LoginView, PasswordResetCompleteView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
-from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
@@ -12,7 +11,6 @@ from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordRese
 from authen.models import User
 from authen.services import verificate_user
 from authen.tasks import send_email
-from config.settings import APP_NAME, EMAIL_HOST_USER
 from libs.authen_mixin import AuthenMixin
 
 
@@ -60,7 +58,7 @@ class ProfileView(AuthenMixin, UpdateView):
     success_url = '/'
 
     extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - профиль  пользователя",
+        'title': f"{os.getenv("APP_NAME")} - профиль  пользователя",
         'header': "Профиль пользователя",
     }
 
@@ -84,13 +82,14 @@ class ManualPasswordResetView(PasswordResetView):
 # ВВОД НОВОГО ПАРОЛЯ
 class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
     extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - ввод нового пароля",
+        'title': f"{os.getenv("APP_NAME")} - ввод нового пароля",
         'header': "Ввод нового пароля",
     }
 
     template_name = 'password_reset_confirm.html'
     form_class = CustomSetPasswordForm
     success_url = reverse_lazy('authen:password_reset_complete')
+
 
 # ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
 class ManualPasswordResetCompleteView(PasswordResetCompleteView):
@@ -104,7 +103,7 @@ class ManualPasswordResetCompleteView(PasswordResetCompleteView):
 class VerificateEmailView(TemplateView):
     template_name = "information.html"
     extra_context = {
-        'title':  f"подтверждение регистрации",
+        'title': f"подтверждение регистрации",
     }
 
     def get_context_data(self, *args, **kwargs):
@@ -118,5 +117,5 @@ class VerificateEmailView(TemplateView):
 class RegisterCompleteView(TemplateView):
     template_name = "register_complete.html"
     extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - регистрация пользователя",
+        'title': f"{os.getenv("APP_NAME")} - регистрация пользователя",
     }

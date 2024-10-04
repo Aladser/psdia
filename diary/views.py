@@ -1,4 +1,3 @@
-from cmath import phase
 from datetime import datetime, timedelta
 
 from django.shortcuts import redirect
@@ -13,8 +12,10 @@ from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, Deta
     ListObjectPermissionMixin
 
 month_name_list = [
-    '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября','декабря'
+    '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
+    'декабря'
 ]
+
 
 # LIST
 class RecordListView(ListObjectPermissionMixin, ListView):
@@ -31,7 +32,8 @@ class RecordListView(ListObjectPermissionMixin, ListView):
 
     def get_queryset(self):
         # Показ своих записей, поиск записей
-        if 'date' in self.request.GET and 'phrase' in self.request.GET and self.request.GET['date']!='' and self.request.GET['phrase']!='':
+        if 'date' in self.request.GET and 'phrase' in self.request.GET and self.request.GET['date'] != '' and \
+                self.request.GET['phrase'] != '':
             "во времени и фразе"
 
             created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
@@ -42,7 +44,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
                 created_at__gt=created_at_start,
                 created_at__lt=created_at_end
             )
-        elif 'date' in self.request.GET and self.request.GET['date']!='':
+        elif 'date' in self.request.GET and self.request.GET['date'] != '':
             "по дате"
 
             created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
@@ -54,7 +56,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
         elif 'phrase' in self.request.GET and self.request.GET['phrase'] != '':
             "по фразе"
 
-            queryset = super().get_queryset().filter(content__contains = self.request.GET['phrase'])
+            queryset = super().get_queryset().filter(content__contains=self.request.GET['phrase'])
         else:
             queryset = super().get_queryset()
 
@@ -71,6 +73,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
                 obj.content = obj.content[:100] + '..'
 
         return context
+
 
 # CREATE
 class RecordCreateView(ManualLoginRequiredMixin, CreateView):
@@ -95,6 +98,7 @@ class RecordCreateView(ManualLoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
+
 # DETAIL
 class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, DetailView):
     model = Record
@@ -111,6 +115,7 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, De
         context['header'] = "Запись от " + created_at
         return context
 
+
 # UPDATE
 class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, UpdateView):
     title = "обновить запись"
@@ -126,6 +131,7 @@ class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMix
     def get_success_url(self):
         return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
+
 # DELETE
 class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
     title = 'удаление записи'
@@ -137,4 +143,3 @@ class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMix
     model = Record
     template_name = 'confirm_delete.html'
     success_url = reverse_lazy('diary:list')
-

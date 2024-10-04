@@ -3,12 +3,15 @@ from django.db import models
 
 from authen.models import User
 
+
 class ListObjectPermissionMixin:
     """Проверка прав пользователя на просмотр списка объектов"""
+
     def get(self, request, *args, **kwargs):
         if str(request.user) == 'AnonymousUser':
             return render(request, 'index.html')
         return super().get(request, *args, **kwargs)
+
 
 class DetailObjectPermissionMixin:
     """Проверка прав пользователя на просмотр объекта"""
@@ -23,6 +26,7 @@ class DetailObjectPermissionMixin:
 
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
 
 class UpdateDeleteObjectPermissionMixin:
     """ Проверка прав пользователя на обновление и удаление объекта """
@@ -46,6 +50,7 @@ class UpdateDeleteObjectPermissionMixin:
             return render(request, 'information.html', context=validation_context)
 
         return super().post(request, *args, **kwargs)
+
 
 def validate_owner(action: str, authuser: User, object: models.Model):
     """проверка прав доступа к объекту

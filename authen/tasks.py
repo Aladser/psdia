@@ -19,4 +19,3 @@ def send_email(email, token) -> str:
         fail_silently=True
     )
     return "Отправлено" if response else response
-
