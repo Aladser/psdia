@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
 
-from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
+from authen.forms import RegisterForm, AuthForm, ProfileForm, ManualPasswordResetForm, ManualSetPasswordForm
 from authen.models import User
 from authen.services import verificate_user
 from authen.tasks import send_email
@@ -76,7 +76,7 @@ class ManualPasswordResetView(PasswordResetView):
 
     template_name = 'password_reset.html'
     email_template_name = 'password_reset_email.html'
-    form_class = CustomPasswordResetForm
+    form_class = ManualPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
 
 
@@ -89,7 +89,7 @@ class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
     }
 
     template_name = 'password_reset_confirm.html'
-    form_class = CustomSetPasswordForm
+    form_class = ManualSetPasswordForm
     success_url = reverse_lazy('authen:password_reset_complete')
 
 
@@ -107,7 +107,7 @@ class VerificateEmailView(TemplateView):
     extra_context = {
         'title': "подтверждение регистрации",
     }
-    template_name = "information.html"
+    template_name = "verification_complete.html"
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()

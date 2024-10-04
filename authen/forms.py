@@ -40,7 +40,7 @@ class ProfileForm(UserChangeForm):
         fields = ('email', 'first_name', 'last_name', 'avatar', 'phone')
 
 
-class CustomPasswordResetForm(PasswordResetForm):
+class ManualPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(
         max_length=254,
         widget=forms.EmailInput(
@@ -61,7 +61,7 @@ class CustomPasswordResetForm(PasswordResetForm):
         return email
 
 
-class CustomSetPasswordForm(SetPasswordForm):
+class ManualSetPasswordForm(SetPasswordForm):
     error_messages = {"password_mismatch": "Пароли не совпадают"}
     new_password1 = forms.CharField(
         label='Новый пароль',
