@@ -1,6 +1,6 @@
 from django.db import models
+
 from authen.models import User
-from config.settings import NULLABLE
 from libs.truncate_table_mixin import TruncateTableMixin
 
 

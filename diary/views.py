@@ -1,8 +1,6 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import CreateView, DeleteView, UpdateView, TemplateView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
@@ -29,8 +27,13 @@ class RecordListView(ListObjectPermissionMixin, ListView):
     paginate_by = 18
 
     def get_queryset(self):
+        # Показ своих записей, поиск записей
+        if 'phrase' in self.request.GET:
+            queryset = super().get_queryset().filter(content__contains = self.request.GET['phrase'])
+        else:
+            queryset = super().get_queryset()
+
         authuser = self.request.user
-        queryset = super().get_queryset()
         return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
 
     def get_context_data(self, **kwargs):
@@ -110,9 +113,3 @@ class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMix
     template_name = 'confirm_delete.html'
     success_url = reverse_lazy('diary:list')
 
-#SEARCH - поиск записей
-class SearchView(View):
-    def post(self, request):
-        data = request.POST
-        print(data['phrase'])
-        return HttpResponse(data['phrase'])
