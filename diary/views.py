@@ -1,6 +1,7 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, UpdateView, TemplateView
 from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
@@ -108,3 +109,7 @@ class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMix
     template_name = 'confirm_delete.html'
     success_url = reverse_lazy('diary:list')
 
+#SEARCH
+def search(request):
+    print(request.POST)
+    return HttpResponse(request.POST)

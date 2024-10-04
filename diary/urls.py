@@ -1,6 +1,6 @@
 from django.urls import path
 from diary.apps import PsdiaConfig
-from diary.views import RecordListView, RecordDetailView, RecordCreateView, RecordDeleteView, RecordUpdateView
+from diary.views import RecordListView, RecordDetailView, RecordCreateView, RecordDeleteView, RecordUpdateView, search
 
 app_name = PsdiaConfig.name
 
@@ -10,4 +10,5 @@ urlpatterns = [
     path('create/', RecordCreateView.as_view(), name="create"),
     path('delete/<int:pk>', RecordDeleteView.as_view(), name='delete'),
     path('edit/<int:pk>', RecordUpdateView.as_view(), name='edit'),
+    path('search/', search, name='search'),
 ]

@@ -2,15 +2,17 @@
 {% load custom_tags %}
 
 {% block content %}
-    <a href="{% url 'diary:create' %}" class="btn-theme p-2 mb-4 w-25">Новая запись</a>
-    <!--поиск-->
-    <form action="#" method="POST" enctype="multipart/form-data" class="mb-4">
-        {% csrf_token %}
-        <div class="input-group rounded">
-          <input type="search" class="form-control rounded" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon" required/>
-          <button class="bgcolor-jade color-beige border-0 rounded px-2 ms-1">&#128269;</button>
-        </div>
-    </form>
+    <div class="d-flex align-items-center justify-content-between w-100">
+        <a href="{% url 'diary:create' %}" class="d-block btn-theme p-2 mb-4 w-25">Новая запись</a>
+        <!--поиск-->
+        <form action="{% url 'diary:search' %}" method="POST" enctype="multipart/form-data" class="d-block mb-4 w-50">
+            {% csrf_token %}
+            <div class="input-group rounded">
+              <input type="search" name="phrase" class="form-control rounded py-2" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon" required/>
+              <button class="bgcolor-jade color-beige border-0 rounded px-2 ms-1" title="Поиск">&#128269;</button>
+            </div>
+        </form>
+    </div>
 
     <div class="d-flex flex-wrap justify-content-center rounded shadow bgcolor-dark-beige">
         {% for obj in object_list%}
