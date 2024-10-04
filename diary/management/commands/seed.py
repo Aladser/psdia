@@ -28,8 +28,9 @@ record_params_obj_list = []
 ri = 0
 for i in range(3):
     for j in range(3):
-        record_params_obj_list.append({'owner':user_list[j], 'content':content_list[ri]})
-        ri+=1
+        record_params_obj_list.append({'owner': user_list[j], 'content': content_list[ri]})
+        ri += 1
+
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):

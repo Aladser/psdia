@@ -1,5 +1,6 @@
 from django.db.models import Model
 
+
 class Seeding:
     @staticmethod
     def seed_table(model: Model, data_list: list):
@@ -18,7 +19,7 @@ class Seeding:
         model.objects.bulk_create(method_obj_list)
 
     @staticmethod
-    def seed_users(model:Model, data_list: list, password:str=None):
+    def seed_users(model: Model, data_list: list, password: str = None):
         """
             Заполняет таблицу пользователей базы данных
             :param model: модель

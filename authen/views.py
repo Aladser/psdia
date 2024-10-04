@@ -1,43 +1,40 @@
-import os
 from secrets import token_hex
 
 from django.contrib.auth.views import LoginView, PasswordResetCompleteView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
-from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
 
-from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
+from authen.forms import RegisterForm, AuthForm, ProfileForm, ManualPasswordResetForm, ManualSetPasswordForm
 from authen.models import User
 from authen.services import verificate_user
 from authen.tasks import send_email
-from config.settings import APP_NAME, EMAIL_HOST_USER
 from libs.authen_mixin import AuthenMixin
 
 
 # АВТОРИЗАЦИЯ
 class UserLoginView(AuthenMixin, LoginView):
-    template_name = 'login.html'
-    form_class = AuthForm
-
     extra_context = {
         'title': "авторизация",
         'header': "Авторизация пользователя",
     }
 
+    template_name = 'login.html'
+    form_class = AuthForm
+
 
 # РЕГИСТРАЦИЯ
 class RegisterView(AuthenMixin, CreateView):
-    model = User
-    form_class = RegisterForm
-    template_name = 'user_form.html'
-    success_url = reverse_lazy('authen:login')
-
     extra_context = {
         'title': "регистрация",
         'header': "Регистрация пользователя",
     }
+
+    model = User
+    form_class = RegisterForm
+    template_name = 'user_form.html'
+    success_url = reverse_lazy('authen:login')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -54,15 +51,16 @@ class RegisterView(AuthenMixin, CreateView):
 
 # ПРОФИЛЬ
 class ProfileView(AuthenMixin, UpdateView):
+    title = "профиль  пользователя"
+    extra_context = {
+        'title': title,
+        'header': title.capitalize(),
+    }
+
     model = User
     form_class = ProfileForm
     template_name = 'user_form.html'
     success_url = '/'
-
-    extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - профиль  пользователя",
-        'header': "Профиль пользователя",
-    }
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -70,42 +68,46 @@ class ProfileView(AuthenMixin, UpdateView):
 
 # СБРОС ПАРОЛЯ - ОТПРАВКА ССЫЛКИ НА ПОЧТУ
 class ManualPasswordResetView(PasswordResetView):
+    title = "сброс пароля"
+    extra_context = {
+        'title': title,
+        'header': title.capitalize(),
+    }
+
     template_name = 'password_reset.html'
     email_template_name = 'password_reset_email.html'
-    form_class = CustomPasswordResetForm
+    form_class = ManualPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
-
-    extra_context = {
-        'title': "сброс пароля",
-        'header': "Сброс пароля пользователя"
-    }
 
 
 # ВВОД НОВОГО ПАРОЛЯ
 class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
+    title = "ввод нового пароля"
     extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - ввод нового пароля",
-        'header': "Ввод нового пароля",
+        'title': title,
+        'header': title.capitalize(),
     }
 
     template_name = 'password_reset_confirm.html'
-    form_class = CustomSetPasswordForm
+    form_class = ManualSetPasswordForm
     success_url = reverse_lazy('authen:password_reset_complete')
+
 
 # ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
 class ManualPasswordResetCompleteView(PasswordResetCompleteView):
+    title = "ввод нового пароля"
     extra_context = {
-        'title': f"{os.getenv("APP_NAME")} - ввод нового пароля",
-        'header': "Ввод нового пароля",
+        'title': title,
+        'header': title.capitalize(),
     }
 
 
 # ПОДТВЕРЖДЕНИЕ ПОЧТЫ
 class VerificateEmailView(TemplateView):
-    template_name = "information.html"
     extra_context = {
-        'title':  f"подтверждение регистрации",
+        'title': "подтверждение регистрации",
     }
+    template_name = "verification_complete.html"
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
@@ -116,7 +118,8 @@ class VerificateEmailView(TemplateView):
 
 # ЗАВЕРШЕНИЕ РЕГИСТРАЦИИ
 class RegisterCompleteView(TemplateView):
-    template_name = "register_complete.html"
     extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - регистрация пользователя",
+        'title': "регистрация пользователя",
     }
+
+    template_name = "register_complete.html"

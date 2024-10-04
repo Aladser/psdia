@@ -10,7 +10,7 @@ class CustomFormatter:
 
     @staticmethod
     def format_form_fields(form) -> None:
-        """форматирует поля формы"""
+        """Форматирует поля формы"""
 
         for field in form.fields.values():
             if not isinstance(field, BooleanField):
