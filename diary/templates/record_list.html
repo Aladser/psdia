@@ -7,8 +7,9 @@
         <!--поиск-->
         <form action="{% url 'diary:list' %}" method="GET" enctype="multipart/form-data" class="d-block mb-4 w-50">
             <div class="input-group rounded">
-              <input type="search" name="phrase" class="form-control rounded py-2" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon"/>
-              <button class="bgcolor-jade color-beige border-0 rounded px-2 ms-1" title="Поиск">&#128269;</button>
+              <input type="date" name="date" class="color-beige-gray border rounded me-1 p-2" title="дата записи">
+              <input type="search" name="phrase" class="form-control rounded py-2 me-1" placeholder="Поиск записи" aria-label="Search" aria-describedby="search-addon"/>
+              <button class="bgcolor-jade color-beige border-0 rounded px-2" title="Поиск">&#128269;</button>
             </div>
         </form>
     </div>
