@@ -1,4 +1,4 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView, DetailView
@@ -6,18 +6,20 @@ from django.views.generic import ListView, DetailView
 from diary.forms import RecordForm
 from diary.models import Record
 from libs.login_required_mixin import ManualLoginRequiredMixin
-from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin
+from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin, \
+    ListObjectPermissionMixin
 
 month_name_list = [
     '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября','декабря'
 ]
 
 # LIST
-class RecordListView(ListView):
+class RecordListView(ListObjectPermissionMixin, ListView):
     title = 'список записей'
     extra_context = {
         'title': title,
         'header': title.capitalize(),
+        'css_list': ['record_list.css'],
     }
 
     model = Record
@@ -26,15 +28,11 @@ class RecordListView(ListView):
 
     def get_queryset(self):
         authuser = self.request.user
-        if str(authuser) == 'AnonymousUser':
-            return Record.objects.none()
-
         queryset = super().get_queryset()
         return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['css_list'] = ['record_list.css']
 
         # урезание размера содержания
         for obj in context["object_list"]:
