@@ -2,18 +2,26 @@
 {% load custom_tags %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-    <a href="{% url 'diary:create' %}" class="btn-theme p-2 mb-4 w-25">Новая запись</a>
-    {% endif %}
+    <div class="d-flex align-items-center justify-content-between w-100">
+        <a href="{% url 'diary:create' %}" class="d-block btn-theme p-2 mb-4 w-25">Новая запись</a>
+        <!--поиск-->
+        <form action="{% url 'diary:list' %}" method="GET" enctype="multipart/form-data" class="d-block mb-4 w-50">
+            <div class="input-group rounded">
+              <input type="search" name="phrase" class="form-control rounded py-2" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon" required/>
+              <button class="bgcolor-jade color-beige border-0 rounded px-2 ms-1" title="Поиск">&#128269;</button>
+            </div>
+        </form>
+    </div>
+
     <div class="d-flex flex-wrap justify-content-center rounded shadow bgcolor-dark-beige">
         {% for obj in object_list%}
-        <a href="{% url 'diary:detail' obj.pk %}" class="record-card p-2 m-2 w-30">
-            <div class='card-body'>
-                <div class="fw-bolder color-beige-gray">{{obj.created_at}}</div>
-                {% if user.is_superuser %}<div class="color-jade pb-2">{{obj.owner}}</div>{% endif %}
-                <p class="card-text color-beige-gray">{{obj.content|safe}}</p>
-            </div>
-        </a>
+            <a href="{% url 'diary:detail' obj.pk %}" class="record-card p-2 m-2 w-30">
+                <div class='card-body'>
+                    <div class="fw-bolder color-beige-gray">{{obj.created_at}}</div>
+                    {% if user.is_superuser %}<div class="color-jade pb-2">{{obj.owner}}</div>{% endif %}
+                    <p class="card-text color-beige-gray">{{obj.content|safe}}</p>
+                </div>
+            </a>
         {% endfor %}
     </div>
 

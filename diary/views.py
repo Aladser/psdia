@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView, DetailView
@@ -27,8 +27,13 @@ class RecordListView(ListObjectPermissionMixin, ListView):
     paginate_by = 18
 
     def get_queryset(self):
+        # Показ своих записей, поиск записей
+        if 'phrase' in self.request.GET:
+            queryset = super().get_queryset().filter(content__contains = self.request.GET['phrase'])
+        else:
+            queryset = super().get_queryset()
+
         authuser = self.request.user
-        queryset = super().get_queryset()
         return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
 
     def get_context_data(self, **kwargs):
