@@ -1,3 +1,6 @@
+from cmath import phase
+from datetime import datetime, timedelta
+
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView
@@ -28,7 +31,29 @@ class RecordListView(ListObjectPermissionMixin, ListView):
 
     def get_queryset(self):
         # Показ своих записей, поиск записей
-        if 'phrase' in self.request.GET:
+        if 'date' in self.request.GET and 'phrase' in self.request.GET and self.request.GET['date']!='' and self.request.GET['phrase']!='':
+            "во времени и фразе"
+
+            created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
+            created_at_end = created_at_start + timedelta(hours=24)
+            phrase = self.request.GET['phrase']
+            queryset = super().get_queryset().filter(
+                content__contains=phrase,
+                created_at__gt=created_at_start,
+                created_at__lt=created_at_end
+            )
+        elif 'date' in self.request.GET and self.request.GET['date']!='':
+            "по дате"
+
+            created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
+            created_at_end = created_at_start + timedelta(hours=24)
+            queryset = super().get_queryset().filter(
+                created_at__gt=created_at_start,
+                created_at__lt=created_at_end
+            )
+        elif 'phrase' in self.request.GET and self.request.GET['phrase'] != '':
+            "по фразе"
+
             queryset = super().get_queryset().filter(content__contains = self.request.GET['phrase'])
         else:
             queryset = super().get_queryset()
