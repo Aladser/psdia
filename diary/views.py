@@ -34,7 +34,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
         # Показ своих записей, поиск записей
         if 'date' in self.request.GET and 'phrase' in self.request.GET and self.request.GET['date'] != '' and \
                 self.request.GET['phrase'] != '':
-            "во времени и фразе"
+            "по времени и фразе"
 
             created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
             created_at_end = created_at_start + timedelta(hours=24)
