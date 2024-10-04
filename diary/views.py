@@ -19,10 +19,8 @@ month_name_list = [
 
 # LIST
 class RecordListView(ListObjectPermissionMixin, ListView):
-    title = 'список записей'
     extra_context = {
-        'title': title,
-        'header': title.capitalize(),
+        'header': 'Список записей',
         'css_list': ['record_list.css'],
     }
 
@@ -110,7 +108,6 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, De
 
         created_at_obj = context['object'].created_at
         created_at = f"{created_at_obj.day} {month_name_list[created_at_obj.month]} {created_at_obj.year}г. {created_at_obj.hour}:{created_at_obj.minute}"
-
         context['title'] = created_at
         context['header'] = "Запись от " + created_at
         return context
