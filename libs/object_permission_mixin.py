@@ -5,7 +5,7 @@ from authen.models import User
 
 
 class ListObjectPermissionMixin:
-    """Проверка прав пользователя на просмотр списка объектов"""
+    """Проверяет права пользователя на просмотр списка объектов"""
 
     def get(self, request, *args, **kwargs):
         if str(request.user) == 'AnonymousUser':
@@ -14,7 +14,7 @@ class ListObjectPermissionMixin:
 
 
 class DetailObjectPermissionMixin:
-    """Проверка прав пользователя на просмотр объекта"""
+    """Проверяет права пользователя на просмотр объекта"""
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -29,7 +29,7 @@ class DetailObjectPermissionMixin:
 
 
 class UpdateDeleteObjectPermissionMixin:
-    """ Проверка прав пользователя на обновление и удаление объекта """
+    """Проверяет права пользователя на обновление и удаление объекта """
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -53,8 +53,9 @@ class UpdateDeleteObjectPermissionMixin:
 
 
 def validate_owner(action: str, authuser: User, object: models.Model):
-    """проверка прав доступа к объекту
-    @param action:
+    """Проверяет права доступа к объекту
+
+    @param action: detail, update, delete
     @param authuser:
     @param object:
     """
