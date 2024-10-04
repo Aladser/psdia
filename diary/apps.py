@@ -4,3 +4,4 @@ from django.apps import AppConfig
 class PsdiaConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'diary'
+    verbose_name = 'Дневник'

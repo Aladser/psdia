@@ -11,6 +11,7 @@ from django.views.generic import CreateView, UpdateView, TemplateView
 from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
 from authen.models import User
 from authen.services import verificate_user
+from authen.tasks import send_email
 from config.settings import APP_NAME, EMAIL_HOST_USER
 from libs.authen_mixin import AuthenMixin
 
@@ -45,16 +46,7 @@ class RegisterView(AuthenMixin, CreateView):
             self.object.is_active = False
             self.object.token = token_hex(10)
             self.object.save()
-
-            url = f"http://{self.request.get_host()}/user/email-confirm/{self.object.token}"
-            send_mail(
-                "Подтвердите свою почту",
-                f"Пройдите по ссылке {url} для подтверждения регистрации на сайте {APP_NAME}",
-                EMAIL_HOST_USER,
-                (self.object.email,),
-                fail_silently=True
-            )
-
+            send_email.delay(self.object.email, self.object.token)
             return redirect(reverse_lazy("authen:register-complete"))
 
         return super().form_valid(form)
@@ -112,8 +104,7 @@ class ManualPasswordResetCompleteView(PasswordResetCompleteView):
 class VerificateEmailView(TemplateView):
     template_name = "information.html"
     extra_context = {
-        'title':  f"{os.getenv("APP_NAME")} - подтверждение регистрации",
-        'header': "Подтверждение регистрации",
+        'title':  f"подтверждение регистрации",
     }
 
     def get_context_data(self, *args, **kwargs):
@@ -128,5 +119,4 @@ class RegisterCompleteView(TemplateView):
     template_name = "register_complete.html"
     extra_context = {
         'title':  f"{os.getenv("APP_NAME")} - регистрация пользователя",
-        'header': "Регистрация пользователя",
     }

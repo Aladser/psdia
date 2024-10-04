@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from diary.forms import RecordForm
 from diary.models import Record
 from libs.login_required_mixin import ManualLoginRequiredMixin
+from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin
 
 month_name_list = [
     '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября','декабря'
@@ -13,10 +14,10 @@ month_name_list = [
 
 # LIST
 class RecordListView(ListView):
-    title = 'записи'
+    title = 'список записей'
     extra_context = {
         'title': title,
-        'header': title.title(),
+        'header': title.capitalize(),
     }
 
     model = Record
@@ -67,7 +68,7 @@ class RecordCreateView(ManualLoginRequiredMixin, CreateView):
         return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
 # DETAIL
-class RecordDetailView(ManualLoginRequiredMixin, DetailView):
+class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, DetailView):
     model = Record
     template_name = "record_detail.html"
 
@@ -83,7 +84,7 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailView):
         return context
 
 # UPDATE
-class RecordUpdateView(ManualLoginRequiredMixin, UpdateView):
+class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, UpdateView):
     title = "обновить запись"
     extra_context = {
         'title': title,
@@ -98,7 +99,7 @@ class RecordUpdateView(ManualLoginRequiredMixin, UpdateView):
         return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
 # DELETE
-class RecordDeleteView(ManualLoginRequiredMixin, DeleteView):
+class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
     title = 'удаление записи'
     extra_context = {
         'title': title,
