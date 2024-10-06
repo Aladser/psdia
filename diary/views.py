@@ -19,10 +19,8 @@ month_name_list = [
 
 # LIST
 class RecordListView(ListObjectPermissionMixin, ListView):
-    title = 'список записей'
     extra_context = {
-        'title': title,
-        'header': title.capitalize(),
+        'header': 'Список записей',
         'css_list': ['record_list.css'],
     }
 
@@ -109,8 +107,9 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, De
         context['object'].content = context['object'].content.replace('\n', '<br>').replace(" ", "&nbsp;")
 
         created_at_obj = context['object'].created_at
-        created_at = f"{created_at_obj.day} {month_name_list[created_at_obj.month]} {created_at_obj.year}г. {created_at_obj.hour}:{created_at_obj.minute}"
-
+        created_at_hour = created_at_obj.hour if created_at_obj.hour > 9 else '0' + str(created_at_obj.hour)
+        created_at_minute = created_at_obj.minute if created_at_obj.minute > 9 else '0' + str(created_at_obj.minute)
+        created_at = f"{created_at_obj.day} {month_name_list[created_at_obj.month]} {created_at_obj.year}г. {created_at_hour}:{created_at_minute}"
         context['title'] = created_at
         context['header'] = "Запись от " + created_at
         return context
