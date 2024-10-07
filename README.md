@@ -12,13 +12,19 @@
 + скопировать *install/psdia.service* -> */etc/systemd/system/*
 + скопировать *install/psdia* -> */etc/nginx/sites-available/*
 + ``ln -s /etc/nginx/sites-available/psdia /etc/nginx/sites-enabled/psdia``
-+ Для копирования css стилей в папку static установить в settings.py:
++
+  * Для копирования css стилей в папку static установить в settings.py:
+    ```
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    ```
+  * Выполнить
+    
+    ```python manage.py collectstatic```
 
+  Для работы на локальном сервере вернуть изначальные настройки
++ Включить и активировать службу
 ```
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+sudo systemctl start psdia
+sudo systemctl enable psdia
 ```
-
-```python manage.py collectstatic```
-
-Для работы на локальном сервере вернуть изначальные настройки
