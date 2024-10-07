@@ -1,14 +1,15 @@
 # Личный дневник
 
 ## Настройки проекта
-+ Создать файл .env в корне проекта с настройками, аналогичными *.env.example*. Настроить папку виртуального окружения так, чтобы путь до gurnicorn был:
-``/venv/bin/gunicorn``
++ Создать файл .env в корне проекта с настройками, аналогичными *.env.example*. 
 + ``python manage.py createusers`` - создать пользователей
 + ``python manage.py seed`` - сидирование таблиц
 + ``celery -A config worker -l INFO`` - запуск отложенных задач
 
 
 ## Запуск на nginx (Ubuntu)
++ Настроить папку виртуального окружения так, чтобы путь до gurnicorn был:
+``/venv/bin/gunicorn``
 + скопировать *install/psdia.service* -> */etc/systemd/system/*
 + скопировать *install/psdia* -> */etc/nginx/sites-available/*
 + ``ln -s /etc/nginx/sites-available/psdia /etc/nginx/sites-enabled/psdia``
