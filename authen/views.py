@@ -67,7 +67,7 @@ class ProfileView(AuthenMixin, UpdateView):
 
 
 # СБРОС ПАРОЛЯ - ОТПРАВКА ССЫЛКИ НА ПОЧТУ
-class ManualPasswordResetView(PasswordResetView):
+class CustomPasswordResetView(PasswordResetView):
     title = "сброс пароля"
     extra_context = {
         'title': title,
@@ -81,7 +81,7 @@ class ManualPasswordResetView(PasswordResetView):
 
 
 # ВВОД НОВОГО ПАРОЛЯ
-class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
+class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
     title = "ввод нового пароля"
     extra_context = {
         'title': title,
@@ -94,7 +94,7 @@ class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
 
 
 # ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
-class ManualPasswordResetCompleteView(PasswordResetCompleteView):
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     title = "ввод нового пароля"
     extra_context = {
         'title': title,
