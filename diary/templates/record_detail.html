@@ -7,6 +7,6 @@
         <a href="{% url 'diary:delete' object.pk %}" class="btn-theme p-1 w-25">Удалить</a>
     </div>
     <div class="text-center color-khaki bg-light border p-2 rounded fs-4">
-        <div class="py-4">{{object|safe}}</div>
+        <p class="py-4 text-wrap">{{object|safe}}</p>
     </div>
 {% endblock %}

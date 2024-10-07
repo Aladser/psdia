@@ -30,6 +30,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
 
     def get_queryset(self):
         # Показ своих записей, поиск записей
+
         if 'date' in self.request.GET and 'phrase' in self.request.GET and self.request.GET['date'] != '' and \
                 self.request.GET['phrase'] != '':
             "по времени и фразе"
@@ -59,7 +60,8 @@ class RecordListView(ListObjectPermissionMixin, ListView):
             queryset = super().get_queryset()
 
         authuser = self.request.user
-        return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
+        queryset = queryset if authuser.is_superuser else queryset.filter(owner=authuser)
+        return queryset.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -104,7 +106,7 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, De
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object'].content = context['object'].content.replace('\n', '<br>').replace(" ", "&nbsp;")
+        context['object'].content = context['object'].content.replace('\n', '<br>')
 
         created_at_obj = context['object'].created_at
         created_at_hour = created_at_obj.hour if created_at_obj.hour > 9 else '0' + str(created_at_obj.hour)
