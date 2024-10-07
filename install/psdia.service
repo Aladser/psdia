@@ -1,0 +1,14 @@
+[Unit]
+Description=psdia-daemon
+After=network.target
+
+[Service]
+User=aladser
+Group=www-data
+Restart=on-failure
+WorkingDirectory=/var/www/psdia
+ExecStart=/var/www/psdia/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/psdia/psdia.sock config.wsgi
+
+[Install]
+WantedBy=multi-user.target
+

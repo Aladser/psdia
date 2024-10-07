@@ -1,0 +1,20 @@
+server {
+    listen 80;
+    server_name psdia.local;
+    error_log  /var/www/psdia/error_log  error;
+
+    location = /favicon.ico {access_log off; log_not_found off; }
+    location /static/ { 
+	root /var/www/psdia;
+    }
+
+    location /media/ {
+	root /var/www/psdia;
+    }
+
+    location / {
+	include proxy_params;
+	proxy_pass http://unix:/var/www/psdia/psdia.sock;
+    }
+}
+
