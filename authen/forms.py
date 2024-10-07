@@ -9,6 +9,8 @@ from libs.custom_formatter import CustomFormatter
 
 
 class AuthForm(AuthenticationForm):
+    """Форма входа пользователя"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         CustomFormatter.format_form_fields(self)
@@ -19,6 +21,8 @@ class AuthForm(AuthenticationForm):
 
 
 class RegisterForm(UserCreationForm):
+    """Форма регистрации пользователя"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         CustomFormatter.format_form_fields(self)
@@ -29,6 +33,8 @@ class RegisterForm(UserCreationForm):
 
 
 class ProfileForm(UserChangeForm):
+    """Форма данных пользователя"""
+
     password = None
 
     def __init__(self, *args, **kwargs):
@@ -40,7 +46,9 @@ class ProfileForm(UserChangeForm):
         fields = ('email', 'first_name', 'last_name', 'avatar', 'phone')
 
 
-class ManualPasswordResetForm(PasswordResetForm):
+class CustomPasswordResetForm(PasswordResetForm):
+    """Форма сброса пароля пользователя"""
+
     email = forms.EmailField(
         max_length=254,
         widget=forms.EmailInput(
@@ -61,7 +69,8 @@ class ManualPasswordResetForm(PasswordResetForm):
         return email
 
 
-class ManualSetPasswordForm(SetPasswordForm):
+class CustomSetPasswordForm(SetPasswordForm):
+    """Форма установки нового пароля пользователя"""
     error_messages = {"password_mismatch": "Пароли не совпадают"}
     new_password1 = forms.CharField(
         label='Новый пароль',
