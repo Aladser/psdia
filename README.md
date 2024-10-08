@@ -52,7 +52,7 @@
 
     + ``RecordDeleteView`` - удаление записи
     
-    ![RecordDeleteView(/readme/RecordDeleteView.png)
+    ![RecordDeleteView](/readme/RecordDeleteView.png)
 
 + Просмотр записей:
   * Пользователи могут просматривать список всех своих записей.
