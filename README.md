@@ -68,9 +68,9 @@
   * ![Авторизация](/readme/Permission_Denied.png)
   
   За права пользователей на просмотр записей отвечают миксины
-    + ``libs.login_required_mixin.CustomLoginRequiredMixin`` - список записей
-    + ``libs.object_permission_mixin.DetailObjectPermissionMixin`` - детали записи
-    + ``libs.object_permission_mixin.UpdateDeleteObjectPermissionMixin`` - обновление или удаление записи
+    + ``libs.object_permission_mixin.ListObjectPermissionMixin`` - список записей. Если пользователь не авторизован, показывается стандартная главная страница.
+    + ``libs.object_permission_mixin.DetailObjectPermissionMixin`` - детали записи. Проверяютс права на просмотр страницы записи.
+    + ``libs.object_permission_mixin.UpdateDeleteObjectPermissionMixin`` - обновление или удаление записи. Проверка прав на обновление или удаление записи.
 + Поиск по записям: 
   * Возможность поиска записей по заголовку или содержимому в интерфейсе сайта.
   

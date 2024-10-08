@@ -3,6 +3,16 @@ from django.db import models
 
 from authen.models import User
 
+
+class ListObjectPermissionMixin:
+    """Проверяет права пользователя на просмотр списка объектов"""
+
+    def get(self, request, *args, **kwargs):
+        if str(request.user) == 'AnonymousUser':
+            return render(request, 'index.html')
+        return super().get(request, *args, **kwargs)
+
+
 class DetailObjectPermissionMixin:
     """Проверяет права пользователя на просмотр объекта"""
 

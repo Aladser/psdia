@@ -8,7 +8,8 @@ from django.views.generic import ListView, DetailView
 from diary.forms import RecordForm
 from diary.models import Record
 from libs.login_required_mixin import CustomLoginRequiredMixin
-from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin
+from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin, \
+    ListObjectPermissionMixin
 
 month_name_list = [
     '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
@@ -17,7 +18,7 @@ month_name_list = [
 
 
 # LIST
-class RecordListView(CustomLoginRequiredMixin, ListView):
+class RecordListView(ListObjectPermissionMixin, ListView):
     extra_context = {
         'header': 'Список записей',
         'css_list': ['record_list.css'],
