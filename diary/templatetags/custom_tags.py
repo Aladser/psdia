@@ -2,7 +2,7 @@ import os
 
 from django import template
 
-from config.settings import APP_NAME, BASE_DIR, MEDIA_URL, STATIC_URL
+from config.settings import APP_NAME, BASE_DIR, MEDIA_URL, STATIC_URL, PHOTO_NOT_FOUND
 
 register = template.Library()
 
@@ -23,4 +23,4 @@ def full_image_path(image_file):
     if image_file != '' and os.path.isfile(BASE_DIR / MEDIA_URL.replace('/', '') / str(image_file)):
         return os.path.join(MEDIA_URL, str(image_file))
     else:
-        return os.path.join(STATIC_URL, "empty_file.png")
+        return os.path.join(STATIC_URL, PHOTO_NOT_FOUND)
