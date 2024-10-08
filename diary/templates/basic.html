@@ -15,10 +15,11 @@
                 {% endif %}
                 <nav>
                     {% if user.is_authenticated %}
-                        {% if user.is_superuser %}
-                            <a class="btn-theme p-2" href="/admin">Админка</a>
-                        {% endif %}
-                        <a class="btn-theme p-2" href="{% url 'authen:logout' %}">Выйти</a>
+                        {% if user.is_superuser %} <a class="btn-theme p-2" href="/admin">Админка</a> {% endif %}
+                        <form action="{% url 'authen:logout' %}" method="post" class="d-inline-block">
+                            {% csrf_token %}
+                            <button class="btn-theme p-2 border-0">Выйти</button>
+                        </form>
                     {% else %}
                         <a class="btn-theme p-2" href="{% url 'authen:login' %}">Войти</a>
                         <a class="btn-theme p-2" href="{% url 'authen:register' %}">Регистрация</a>

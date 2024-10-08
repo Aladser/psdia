@@ -1,8 +1,7 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.core.management import BaseCommand
 from django.shortcuts import get_object_or_404
-from django.utils.datetime_safe import datetime
 
 from authen.management.commands.createusers import user_params_obj_list
 from authen.models import User
