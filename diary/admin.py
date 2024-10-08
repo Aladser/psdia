@@ -4,5 +4,5 @@ from diary.models import Record
 
 @admin.register(Record)
 class RecordAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'owner', 'content', 'created_at', 'updated_at')
+    list_display = ('pk', 'owner', 'content', 'created_at')
     search_fields = ('owner', 'content')

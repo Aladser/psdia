@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
 from diary.models import Record
-from libs.login_required_mixin import ManualLoginRequiredMixin
+from libs.login_required_mixin import CustomLoginRequiredMixin
 from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin, \
     ListObjectPermissionMixin
 
@@ -31,40 +31,44 @@ class RecordListView(ListObjectPermissionMixin, ListView):
     def get_queryset(self):
         # Показ своих записей, поиск записей
 
-        if 'date' in self.request.GET and 'phrase' in self.request.GET and self.request.GET['date'] != '' and \
-                self.request.GET['phrase'] != '':
-            "по времени и фразе"
+        if 'search_date' in self.request.GET and 'search_phrase' in self.request.GET and self.request.GET['search_date'] != '' and \
+                self.request.GET['search_phrase'] != '':
+            "по дате и фразе"
 
-            created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
+            created_at_start = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
             created_at_end = created_at_start + timedelta(hours=24)
-            phrase = self.request.GET['phrase']
+            phrase = self.request.GET['search_phrase']
             queryset = super().get_queryset().filter(
                 content__contains=phrase,
                 created_at__gt=created_at_start,
                 created_at__lt=created_at_end
             )
-        elif 'date' in self.request.GET and self.request.GET['date'] != '':
+        elif 'search_date' in self.request.GET and self.request.GET['search_date'] != '':
             "по дате"
 
-            created_at_start = datetime.strptime(self.request.GET['date'], "%Y-%m-%d").date()
+            created_at_start = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
             created_at_end = created_at_start + timedelta(hours=24)
             queryset = super().get_queryset().filter(
                 created_at__gt=created_at_start,
                 created_at__lt=created_at_end
             )
-        elif 'phrase' in self.request.GET and self.request.GET['phrase'] != '':
+        elif 'search_phrase' in self.request.GET and self.request.GET['search_phrase'] != '':
             "по фразе"
 
-            queryset = super().get_queryset().filter(content__contains=self.request.GET['phrase'])
+            queryset = super().get_queryset().filter(content__contains=self.request.GET['search_phrase'])
         else:
             queryset = super().get_queryset()
 
         authuser = self.request.user
-        queryset = queryset if authuser.is_superuser else queryset.filter(owner=authuser)
-        return queryset.order_by('-created_at')
+        return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # поля поиска записей
+        if 'search_date' in self.request.GET:
+            context['search_date'] = self.request.GET['search_date']
+            context['search_phrase'] = self.request.GET['search_phrase']
 
         # урезание размера содержания
         for obj in context["object_list"]:
@@ -76,7 +80,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
 
 
 # CREATE
-class RecordCreateView(ManualLoginRequiredMixin, CreateView):
+class RecordCreateView(CustomLoginRequiredMixin, CreateView):
     title = "добавить запись"
     extra_context = {
         'title': title,
@@ -100,7 +104,7 @@ class RecordCreateView(ManualLoginRequiredMixin, CreateView):
 
 
 # DETAIL
-class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, DetailView):
+class RecordDetailView(CustomLoginRequiredMixin, DetailObjectPermissionMixin, DetailView):
     model = Record
     template_name = "record_detail.html"
 
@@ -118,7 +122,7 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, De
 
 
 # UPDATE
-class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, UpdateView):
+class RecordUpdateView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, UpdateView):
     title = "обновить запись"
     extra_context = {
         'title': title,
@@ -134,8 +138,8 @@ class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMix
 
 
 # DELETE
-class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
-    title = 'удаление записи'
+class RecordDeleteView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
+    title = 'удалить запись'
     extra_context = {
         'title': title,
         'header': title.capitalize(),
