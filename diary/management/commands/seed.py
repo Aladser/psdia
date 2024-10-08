@@ -39,8 +39,9 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         Seeding.seed_table(Record, record_params_obj_list)
 
+        # разное время для записей
         created_at = datetime.now()
         for record in Record.objects.all():
-            record.created_at =created_at
+            record.created_at = created_at
             record.save()
             created_at -= timedelta(days=1)
