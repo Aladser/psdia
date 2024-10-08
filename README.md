@@ -18,20 +18,20 @@
   * Представления:
     + ``UserLoginView`` - авторизация. Форма ``AuthForm``
     
-    ![Авторизация](/readme/AuthForm.png)
+    ![UserLoginView](/readme/AuthForm.png)
     + ``LogoutView`` - выход из системы. Стандаратное представление.
     + ``RegisterView`` - регистрация. Форма ``RegisterForm``
     
-    ![Авторизация](/readme/RegisterForm.png)
+    ![RegisterView](/readme/RegisterForm.png)
     + ``ProfileView`` - профиль. Форма ``ProfileForm``
     
-    ![Авторизация](/readme/ProfileForm.png)
+    ![ProfileView](/readme/ProfileForm.png)
     + ``CustomPasswordResetView`` - сброс пароля и отправка ссылки на сброс пароля на почту. Форма ``CustomPasswordResetForm``
     
-    ![Авторизация](/readme/CustomPasswordResetForm.png)
+    ![CustomPasswordResetView](/readme/CustomPasswordResetForm.png)
     + ``CustomUserPasswordResetConfirmView`` - ввод нового пароля. Форма ``CustomSetPasswordForm``
     
-    ![Авторизация](/readme/CustomSetPasswordForm.png)
+    ![CustomUserPasswordResetConfirmView](/readme/CustomSetPasswordForm.png)
     + ``CustomPasswordResetCompleteView`` - проверка ввода нового пароля
     + ``VerificateEmailView`` - подтверждение почты
     + ``RegisterCompleteView`` - завершение регистрации
@@ -44,41 +44,42 @@
   * Представления
     + ``RecordCreateView`` - создание записи
 
-    ![Авторизация](/readme/RecordCreateView.png)
+    ![RecordCreateView](/readme/RecordCreateView.png)
 
     + ``RecordUpdateView`` - обновление записи
     
-    ![Авторизация](/readme/RecordUpdateView.png)
+    ![RecordUpdateView](/readme/RecordUpdateView.png)
 
     + ``RecordDeleteView`` - удаление записи
     
-    ![Авторизация](/readme/RecordDeleteView.png)
+    ![RecordDeleteView(/readme/RecordDeleteView.png)
 
 + Просмотр записей:
   * Пользователи могут просматривать список всех своих записей.
   
     ``RecordListView`` - список записей пользователей.
   
-    ![Авторизация](/readme/RecordListView.png)
+    ![RecordListView](/readme/RecordListView.png)
   * Пользователи могут просматривать отдельные записи в подробном виде.
   
     ``RecordDetailView`` - детали записи
   
-    ![Авторизация](/readme/RecordDetailView.png)
-  * ![Авторизация](/readme/Permission_Denied.png)
-  
+    ![RecordDetailView](/readme/RecordDetailView.png)
+
   За права пользователей на просмотр записей отвечают миксины
     + ``libs.object_permission_mixin.ListObjectPermissionMixin`` - список записей. Если пользователь не авторизован, показывается стандартная главная страница.
     + ``libs.object_permission_mixin.DetailObjectPermissionMixin`` - детали записи. Проверяютс права на просмотр страницы записи.
     + ``libs.object_permission_mixin.UpdateDeleteObjectPermissionMixin`` - обновление или удаление записи. Проверка прав на обновление или удаление записи.
+    ![Permission_Denied](/readme/Permission_Denied.png)
+  
 + Поиск по записям: 
   * Возможность поиска записей по заголовку или содержимому в интерфейсе сайта.
   
   ``RecordListView.get_queryset()`` - если введется поиск по записям, get_queryset() выдает записи согласно GET-параметрам элементов поиска.
   Поиск введется по дате создания И/ИЛИ фразе
-  ![Авторизация](/readme/RecordListView_phrase_and_date.png)
-  ![Авторизация](/readme/RecordListView_date.png)
-  ![Авторизация](/readme/RecordListView_phrase.png)
+  ![RecordListView_phrase_and_date](/readme/RecordListView_phrase_and_date.png)
+  ![RecordListView_date](/readme/RecordListView_date.png)
+  ![RecordListView_phrase](/readme/RecordListView_phrase.png)
 
 
 
