@@ -68,7 +68,11 @@
 + Поиск по записям: 
   * Возможность поиска записей по заголовку или содержимому в интерфейсе сайта.
   
-  ``RecordListView.get_queryset()`` - если введется поиск по записям, get_queryset() выдает записи согласно GET-параметрам элементов поиска
+  ``RecordListView.get_queryset()`` - если введется поиск по записям, get_queryset() выдает записи согласно GET-параметрам элементов поиска.
+  Поиск введется по дате создания И/ИЛИ фразе
+  ![Авторизация](/readme/RecordListView_phrase_and_date.png)
+  ![Авторизация](/readme/RecordListView_date.png)
+  ![Авторизация](/readme/RecordListView_phrase.png)
 
 
 
