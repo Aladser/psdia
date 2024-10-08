@@ -139,7 +139,7 @@ class RecordUpdateView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMix
 
 # DELETE
 class RecordDeleteView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
-    title = 'удаление записи'
+    title = 'удалить запись'
     extra_context = {
         'title': title,
         'header': title.capitalize(),
