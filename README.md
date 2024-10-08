@@ -1,30 +1,74 @@
-# Личный дневник (версия без докера)
+# Личный дневник
+
+Веб-приложение для ведения личного дневника. 
+Приложение позволяет пользователям создавать, редактировать и удалять записи в дневнике, просматривать свои записи в удобном интерфейсе. 
+
++ Все представления в CBV-стиле.
 
 ## Настройки проекта
-+ Создать файл .env в корне проекта с настройками, аналогичными *.env.example*. Настроить папку виртуального окружения так, чтобы путь до gurnicorn был:
-``/venv/bin/gunicorn``
-+ ``python manage.py createusers`` - создать пользователей
-+ ``python manage.py seed`` - сидирование таблиц
-+ ``celery -A config worker -l INFO`` - запуск отложенных задач
++ Создать файл .env в корне проекта с настройками, аналогичными *.env.example*.
++ ``docker-compose up --build`` - пересобрать контейнеры
++ ``docker-compose up`` - запуск контейнеров
 
+## Функционал сайта
 
-## Запуск на nginx (Ubuntu)
-+ скопировать *install/psdia.service* -> */etc/systemd/system/*
-+ скопировать *install/psdia* -> */etc/nginx/sites-available/*
-+ ``ln -s /etc/nginx/sites-available/psdia /etc/nginx/sites-enabled/psdia``
-+
-  * Для копирования css стилей в папку static установить в settings.py:
-    ```
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-    #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-    ```
-  * Выполнить
++ Регистрация и аутентификация пользователей (приложение **authen**):
+  * Пользователи должны иметь возможность зарегистрироваться, войти в систему и выйти из неё.
+  * Модель ``User`` - пользователь: фамилия, имя, почта, телефон, аватар
+  * Представления:
+    + ``UserLoginView`` - авторизация. Форма ``AuthForm``
     
-    ```python manage.py collectstatic```
+    ![Авторизация](/readme/AuthForm.png)
+    + ``LogoutView`` - выход из системы. Стандаратное представление.
+    + ``RegisterView`` - регистрация. Форма ``RegisterForm``
+    
+    ![Авторизация](/readme/RegisterForm.png)
+    + ``ProfileView`` - профиль. Форма ``ProfileForm``
+    
+    ![Авторизация](/readme/ProfileForm.png)
+    + ``CustomPasswordResetView`` - сброс пароля и отправка ссылки на сброс пароля на почту. Форма ``CustomPasswordResetForm``
+    
+    ![Авторизация](/readme/CustomPasswordResetForm.png)
+    + ``CustomUserPasswordResetConfirmView`` - ввод нового пароля. Форма ``CustomSetPasswordForm``
+    
+    ![Авторизация](/readme/CustomSetPasswordForm.png)
+    + ``CustomPasswordResetCompleteView`` - проверка ввода нового пароля
+    + ``VerificateEmailView`` - подтверждение почты
+    + ``RegisterCompleteView`` - завершение регистрации
+  * Используется для всех шаблонов представлений базовый шаблон ``basic_auth``
+  * Письмо подтверждения регистрации отправляется через отложенную функцию ``send_email()``
+  
++ Создание, редактирование и удаление записей в дневнике (приложение **diary**):
+  * Авторизованные пользователи могут добавлять новые записи в дневник, редактировать существующие записи (только свои) и удалять ненужные записи.
+  * Модель ``Record`` - запись: автор, содержание(заголовок), дата создания
+  * Представления
+    + ``RecordCreateView`` - создание записи
 
-  Для работы на локальном сервере вернуть изначальные настройки
-+ Включить и активировать службу
-```
-sudo systemctl start psdia
-sudo systemctl enable psdia
-```
+    ![Авторизация](/readme/RecordCreateView.png)
+
+    + ``RecordUpdateView`` - обновление записи
+    
+    ![Авторизация](/readme/RecordUpdateView.png)
+
+    + ``RecordDeleteView`` - удаление записи
+    
+    ![Авторизация](/readme/RecordDeleteView.png)
+
++ Просмотр записей:
+  * Пользователи могут просматривать список всех своих записей.
+  
+    ``RecordListView`` - список записей пользователей.
+  
+    ![Авторизация](/readme/RecordListView.png)
+  * Пользователи могут просматривать отдельные записи в подробном виде.
+  
+    ``RecordDetailView`` - детали записи
+  
+    ![Авторизация](/readme/RecordDetailView.png)
++ Поиск по записям: 
+  * Возможность поиска записей по заголовку или содержимому в интерфейсе сайта.
+  
+  ``RecordListView.get_queryset()`` - если введется поиск по записям, get_queryset() выдает записи согласно GET-параметрам элементов поиска
+
+
+
