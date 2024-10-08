@@ -10,6 +10,7 @@
 
             <div class="d-flex align-items-center">
                 {% if user.is_authenticated %}
+                    <img src="/media/{{user.avatar}}" class="user-avatar me-1">
                     <a href="{% url 'authen:profile' %}" class="d-flex align-items-center me-3 fw-bolder link-success"> {{user}}</a>
                 {% endif %}
                 <nav>
