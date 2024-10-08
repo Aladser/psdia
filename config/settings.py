@@ -56,11 +56,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
     }
 }
 
@@ -95,7 +95,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # --- МЕДИА ---
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # ПОЧТА
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -114,8 +114,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # CELERY
-CELERY_BROKER_URL = os.getenv("CELERY_URL")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_URL")
+CELERY_BROKER_URL = os.getenv("DOCKER_CELERY_URL")
+CELERY_RESULT_BACKEND = os.getenv("DOCKER_CELERY_URL")
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
