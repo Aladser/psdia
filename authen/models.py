@@ -20,10 +20,5 @@ class User(AbstractUser):
         verbose_name_plural = 'пользователи'
         ordering = ('first_name', 'last_name', 'email')
 
-    def clean(self):
-        avatar = os.path.join(MEDIA_ROOT, self.avatar.name)
-        if not os.path.exists(avatar):
-            self.avatar.name = 'images/PHOTO_NOT_FOUND.png'
-
     def __str__(self):
         return f"{self.first_name} {self.last_name}" if self.first_name and self.last_name else self.email

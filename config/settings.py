@@ -84,7 +84,9 @@ TIME_ZONE = 'Asia/Yakutsk'
 USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 NULLABLE = {'null': True, 'blank': True}
+PHOTO_NOT_FOUND = 'images/noava.png'
 
 # --- СТАТИКА ---
 STATIC_URL = '/static/'
@@ -93,7 +95,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # --- МЕДИА ---
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # ПОЧТА
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
