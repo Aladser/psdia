@@ -84,7 +84,9 @@ TIME_ZONE = 'Asia/Yakutsk'
 USE_I18N = True
 USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 NULLABLE = {'null': True, 'blank': True}
+PHOTO_NOT_FOUND = "empty_file.png"
 
 # --- СТАТИКА ---
 STATIC_URL = '/static/'
