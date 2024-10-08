@@ -7,9 +7,8 @@ from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
 from diary.models import Record
-from libs.login_required_mixin import ManualLoginRequiredMixin
-from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin, \
-    ListObjectPermissionMixin
+from libs.login_required_mixin import CustomLoginRequiredMixin
+from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin
 
 month_name_list = [
     '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября',
@@ -18,7 +17,7 @@ month_name_list = [
 
 
 # LIST
-class RecordListView(ListObjectPermissionMixin, ListView):
+class RecordListView(CustomLoginRequiredMixin, ListView):
     extra_context = {
         'header': 'Список записей',
         'css_list': ['record_list.css'],
@@ -33,7 +32,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
 
         if 'search_date' in self.request.GET and 'search_phrase' in self.request.GET and self.request.GET['search_date'] != '' and \
                 self.request.GET['search_phrase'] != '':
-            "по времени и фразе"
+            "по дате и фразе"
 
             created_at_start = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
             created_at_end = created_at_start + timedelta(hours=24)
@@ -60,8 +59,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
             queryset = super().get_queryset()
 
         authuser = self.request.user
-        queryset = queryset if authuser.is_superuser else queryset.filter(owner=authuser)
-        return queryset.order_by('-created_at')
+        return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,7 +79,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
 
 
 # CREATE
-class RecordCreateView(ManualLoginRequiredMixin, CreateView):
+class RecordCreateView(CustomLoginRequiredMixin, CreateView):
     title = "добавить запись"
     extra_context = {
         'title': title,
@@ -105,7 +103,7 @@ class RecordCreateView(ManualLoginRequiredMixin, CreateView):
 
 
 # DETAIL
-class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, DetailView):
+class RecordDetailView(CustomLoginRequiredMixin, DetailObjectPermissionMixin, DetailView):
     model = Record
     template_name = "record_detail.html"
 
@@ -123,7 +121,7 @@ class RecordDetailView(ManualLoginRequiredMixin, DetailObjectPermissionMixin, De
 
 
 # UPDATE
-class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, UpdateView):
+class RecordUpdateView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, UpdateView):
     title = "обновить запись"
     extra_context = {
         'title': title,
@@ -139,7 +137,7 @@ class RecordUpdateView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMix
 
 
 # DELETE
-class RecordDeleteView(ManualLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
+class RecordDeleteView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMixin, DeleteView):
     title = 'удаление записи'
     extra_context = {
         'title': title,

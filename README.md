@@ -65,6 +65,12 @@
     ``RecordDetailView`` - детали записи
   
     ![Авторизация](/readme/RecordDetailView.png)
+  * ![Авторизация](/readme/Permission_Denied.png)
+  
+  За права пользователей на просмотр записей отвечают миксины
+    + ``libs.login_required_mixin.CustomLoginRequiredMixin`` - список записей
+    + ``libs.object_permission_mixin.DetailObjectPermissionMixin`` - детали записи
+    + ``libs.object_permission_mixin.UpdateDeleteObjectPermissionMixin`` - обновление или удаление записи
 + Поиск по записям: 
   * Возможность поиска записей по заголовку или содержимому в интерфейсе сайта.
   
