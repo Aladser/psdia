@@ -5,6 +5,7 @@
 
 ## Настройки проекта
 + Создать файл .env в корне проекта с настройками, аналогичными *.env.example*.
++ ``celery -A config worker -l INFO`` - запуск периодической задачи
 
 ## Запуск на nginxб Ubuntu:
   + Поменять в *config/settings.py*
