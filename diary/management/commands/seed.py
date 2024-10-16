@@ -34,11 +34,6 @@ user_params_obj_list = [
     }
 ]
 password = '_strongpassword_'
-user_list = [
-    get_object_or_404(User, email=user_params_obj_list[1]['email']),
-    get_object_or_404(User, email=user_params_obj_list[2]['email']),
-    get_object_or_404(User, email=user_params_obj_list[3]['email'])
-]
 
 # записи
 content_list = [
@@ -52,17 +47,25 @@ content_list = [
     "На днях прошел дождь, и я осталась дома, смотрела фильмы и пила чай, уютный вечер, которого так ждала.",
     "Познакомилась с интересным человеком. Его истории о путешествиях были настолько захватывающими, что я не заметила, как пролетело время."
 ]
-
 record_params_obj_list = []
-ri = 0
-for i in range(3):
-    for j in range(3):
-        record_params_obj_list.append({'owner': user_list[j], 'content': content_list[ri]})
-        ri += 1
 
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
+        # пользователи
+        Seeding.seed_users(User, user_params_obj_list, password)
+        user_list = [
+            get_object_or_404(User, email=user_params_obj_list[1]['email']),
+            get_object_or_404(User, email=user_params_obj_list[2]['email']),
+            get_object_or_404(User, email=user_params_obj_list[3]['email'])
+        ]
+
+        # записи
+        ri = 0
+        for i in range(3):
+            for j in range(3):
+                record_params_obj_list.append({'owner': user_list[j], 'content': content_list[ri]})
+                ri += 1
         Seeding.seed_table(Record, record_params_obj_list)
 
         # разное время для записей
