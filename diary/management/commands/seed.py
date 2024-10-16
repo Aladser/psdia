@@ -2,19 +2,45 @@ from datetime import timedelta
 
 from django.core.management import BaseCommand
 from django.shortcuts import get_object_or_404
-from django.utils.datetime_safe import datetime
+from django.utils import timezone
 
-from authen.management.commands.createusers import user_params_obj_list
 from authen.models import User
 from diary.models import Record
 from libs.seeding import Seeding
 
+# пользователи
+user_params_obj_list = [
+    {
+        'email': 'admin@test.ru',
+        'first_name': 'Админ',
+        'last_name': 'Админов',
+        'is_superuser': True,
+        'is_staff': True
+    },
+    {
+        'email': 'user1@test.ru',
+        'first_name': 'Пользователь 1',
+        'last_name': 'Обычный',
+    },
+    {
+        'email': 'user2@test.ru',
+        'first_name': 'Пользователь 2',
+        'last_name': 'Обычный',
+    },
+    {
+        'email': 'user3@test.ru',
+        'first_name': 'Пользователь 3',
+        'last_name': 'Обычный',
+    }
+]
+password = '_strongpassword_'
 user_list = [
     get_object_or_404(User, email=user_params_obj_list[1]['email']),
     get_object_or_404(User, email=user_params_obj_list[2]['email']),
     get_object_or_404(User, email=user_params_obj_list[3]['email'])
 ]
 
+# записи
 content_list = [
     "Сегодня утром гуляла по парку, слышала, как поют птицы. Чудесное время года!",
     "Сделала вечернюю пробежку и почувствовала прилив энергии. Это так воодушевляет!",
@@ -40,7 +66,7 @@ class Command(BaseCommand):
         Seeding.seed_table(Record, record_params_obj_list)
 
         # разное время для записей
-        created_at = datetime.now()
+        created_at = timezone.now()
         for record in Record.objects.all():
             record.created_at = created_at
             record.save()
