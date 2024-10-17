@@ -17,8 +17,8 @@
   ```
   на
   ```
-  #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-  STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+  STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+  #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
   ```
   + ``python manage.py collectstatic``
   + Для работы локального сервера вернуть настройки обратно
