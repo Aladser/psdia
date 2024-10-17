@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, TemplateView
 
-from authen.forms import RegisterForm, AuthForm, ProfileForm, ManualPasswordResetForm, ManualSetPasswordForm
+from authen.forms import RegisterForm, AuthForm, ProfileForm, CustomPasswordResetForm, CustomSetPasswordForm
 from authen.models import User
 from authen.services import verificate_user
 from authen.tasks import send_email
@@ -67,7 +67,7 @@ class ProfileView(AuthenMixin, UpdateView):
 
 
 # СБРОС ПАРОЛЯ - ОТПРАВКА ССЫЛКИ НА ПОЧТУ
-class ManualPasswordResetView(PasswordResetView):
+class CustomPasswordResetView(PasswordResetView):
     title = "сброс пароля"
     extra_context = {
         'title': title,
@@ -76,12 +76,13 @@ class ManualPasswordResetView(PasswordResetView):
 
     template_name = 'password_reset.html'
     email_template_name = 'password_reset_email.html'
-    form_class = ManualPasswordResetForm
+    form_class = CustomPasswordResetForm
     success_url = reverse_lazy('authen:password_reset_done')
 
 
-# ВВОД НОВОГО ПАРОЛЯ
-class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
+
+# СБРОС ПАРОЛЯ - ВВОД НОВОГО ПАРОЛЯ
+class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
     title = "ввод нового пароля"
     extra_context = {
         'title': title,
@@ -89,12 +90,12 @@ class ManualUserPasswordResetConfirmView(PasswordResetConfirmView):
     }
 
     template_name = 'password_reset_confirm.html'
-    form_class = ManualSetPasswordForm
+    form_class = CustomSetPasswordForm
     success_url = reverse_lazy('authen:password_reset_complete')
 
 
-# ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
-class ManualPasswordResetCompleteView(PasswordResetCompleteView):
+# СБРОС ПАРОЛЯ - ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     title = "ввод нового пароля"
     extra_context = {
         'title': title,
