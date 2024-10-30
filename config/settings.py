@@ -119,3 +119,15 @@ CELERY_RESULT_BACKEND = os.getenv("DOCKER_CELERY_URL")
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# --- КЭШИРОВАНИЕ ---
+CACHED_ENABLED = os.getenv('CACHED_ENABLED') or False
+CACHED_TIME = 60
+if CACHED_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv('CACHED_LOCATION'),
+            "TIMEOUT": CACHED_TIME
+        }
+    }

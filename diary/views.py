@@ -7,7 +7,9 @@ from django.views.generic import ListView, DetailView
 
 from diary.forms import RecordForm
 from diary.models import Record
+from diary.services import get_cache_key_from_request
 from libs.login_required_mixin import CustomLoginRequiredMixin
+from libs.managed_cache import ManagedCache
 from libs.object_permission_mixin import UpdateDeleteObjectPermissionMixin, DetailObjectPermissionMixin, \
     ListObjectPermissionMixin
 
@@ -31,35 +33,42 @@ class RecordListView(ListObjectPermissionMixin, ListView):
     def get_queryset(self):
         # Показ своих записей, поиск записей
 
-        if 'search_date' in self.request.GET and 'search_phrase' in self.request.GET and self.request.GET['search_date'] != '' and \
+        authuser = self.request.user
+        # кеширование
+        cache_key = get_cache_key_from_request(self.request)
+        cached_queryset = ManagedCache.get(cache_key)
+        if cached_queryset:
+            queryset = cached_queryset
+        else:
+            queryset = super().get_queryset()
+            ManagedCache.write(cache_key, queryset)
+
+        if 'search_date' in self.request.GET and 'search_phrase' in self.request.GET and self.request.GET[
+            'search_date'] != '' and \
                 self.request.GET['search_phrase'] != '':
             "по дате и фразе"
 
-            created_at_start = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
-            created_at_end = created_at_start + timedelta(hours=24)
-            phrase = self.request.GET['search_phrase']
-            queryset = super().get_queryset().filter(
-                content__contains=phrase,
-                created_at__gt=created_at_start,
-                created_at__lt=created_at_end
+            created_at_interval_from = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
+            created_at_interval_to = created_at_interval_from + timedelta(hours=24)
+            queryset = queryset.filter(
+                content__contains=self.request.GET['search_phrase'],
+                created_at__gt=created_at_interval_from,
+                created_at__lt=created_at_interval_to
             )
         elif 'search_date' in self.request.GET and self.request.GET['search_date'] != '':
             "по дате"
 
-            created_at_start = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
-            created_at_end = created_at_start + timedelta(hours=24)
-            queryset = super().get_queryset().filter(
-                created_at__gt=created_at_start,
-                created_at__lt=created_at_end
+            created_at_interval_from = datetime.strptime(self.request.GET['search_date'], "%Y-%m-%d").date()
+            created_at_interval_to = created_at_interval_from + timedelta(hours=24)
+            queryset = queryset.filter(
+                created_at__gt=created_at_interval_from,
+                created_at__lt=created_at_interval_to
             )
         elif 'search_phrase' in self.request.GET and self.request.GET['search_phrase'] != '':
             "по фразе"
 
-            queryset = super().get_queryset().filter(content__contains=self.request.GET['search_phrase'])
-        else:
-            queryset = super().get_queryset()
+            queryset = queryset.filter(content__contains=self.request.GET['search_phrase'])
 
-        authuser = self.request.user
         return queryset if authuser.is_superuser else queryset.filter(owner=authuser)
 
     def get_context_data(self, **kwargs):
@@ -96,6 +105,11 @@ class RecordCreateView(CustomLoginRequiredMixin, CreateView):
             content = form.__dict__['data']['content']
             owner = self.request.user
             self.object = Record.objects.create(owner=owner, content=content)
+
+            # удаление кэша пользователя
+            cache_key = get_cache_key_from_request(self.request)
+            ManagedCache.remove(cache_key)
+
             return redirect(self.get_success_url())
         return super().form_valid(form)
 
@@ -133,6 +147,13 @@ class RecordUpdateView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMix
     form_class = RecordForm
     template_name = 'record_form.html'
 
+    def form_valid(self, form):
+        # удаление кэша пользователя
+        cache_key = get_cache_key_from_request(self.request)
+        ManagedCache.remove(cache_key)
+
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy("diary:detail", kwargs={"pk": self.object.pk})
 
@@ -144,6 +165,13 @@ class RecordDeleteView(CustomLoginRequiredMixin, UpdateDeleteObjectPermissionMix
         'title': title,
         'header': title.capitalize(),
     }
+
+    def form_valid(self, form):
+        # удаление кэша пользователя
+        cache_key = get_cache_key_from_request(self.request)
+        ManagedCache.remove(cache_key)
+
+        return super().form_valid(form)
 
     model = Record
     template_name = 'confirm_delete.html'

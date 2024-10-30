@@ -48,7 +48,6 @@ class ProfileForm(UserChangeForm):
 
 class CustomPasswordResetForm(PasswordResetForm):
     """Форма сброса пароля пользователя"""
-
     email = forms.EmailField(
         max_length=254,
         widget=forms.EmailInput(
