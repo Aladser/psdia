@@ -31,7 +31,7 @@ class RecordListView(ListObjectPermissionMixin, ListView):
     paginate_by = 18
 
     def get_queryset(self):
-        # Показ своих записей, поиск записей
+        # Показ своих записей с поиском
 
         authuser = self.request.user
         # кеширование
