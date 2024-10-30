@@ -94,7 +94,7 @@ class CustomUserPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy('authen:password_reset_complete')
 
 
-# СБРОС ПАРОЛЯ - ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
+#  СБРОС ПАРОЛЯ - ПРОВЕРКА ВВОДА НОВОГО ПАРОЛЯ
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     title = "ввод нового пароля"
     extra_context = {

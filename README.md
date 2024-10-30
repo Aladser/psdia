@@ -2,35 +2,13 @@
 
 Веб-приложение для ведения личного дневника. 
 
-Приложение позволяет пользователям создавать, редактировать и удалять записи в дневнике, просматривать свои записи в удобном интерфейсе.
+Приложение позволяет пользователям создавать, редактировать и удалять записи в дневнике, просматривать свои записи в удобном интерфейсе. Все представления в CBV-стиле.
 
 ## Настройки проекта
 + Создать файл .env в корне проекта с настройками, аналогичными *.env.example*.
-+ ``python manage.py seed`` - сидирование таблиц
-+ ``celery -A config worker -l INFO`` - запуск периодической задачи
++ ``docker-compose up --build`` - пересобрать контейнеры
++ ``docker-compose up`` - запуск контейнеров
 
-## Запуск на nginx, Ubuntu:
-  + Поменять в *config/settings.py*
-  ```
-  #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-  STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-  ```
-  на
-  ```
-  STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-  #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-  ```
-  + ``python manage.py collectstatic``
-  + Для работы локального сервера вернуть настройки обратно
-  + ``sudo cp /var/www/install/psdia.service /etc/systemd/system/psdia.service``
-  + ``sudo systemctl start psdia``
-  + ``sudo systemctl enable psdia``
-  + ``sudo cp /var/www/install/psdia /etc/nginx/sites-available/psdia``
-  + ``sudo ln -s /etc/nginx/sites-available/psdia /etc/nginx/sites-enabled/psdia``
-  + ``sudo systemctl restart nginx``
-  
-
-После копирования вернуть обратно для работы локального сервера
 
 ## Функционал сайта
 
@@ -74,7 +52,7 @@
 
     + ``RecordDeleteView`` - удаление записи
     
-    ![RecordDeleteView(/readme/RecordDeleteView.png)
+    ![RecordDeleteView](/readme/RecordDeleteView.png)
 
 + Просмотр записей:
   * Пользователи могут просматривать список всех своих записей.
